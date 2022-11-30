@@ -3,7 +3,7 @@ NAME = genevachecklist
 LOGIN = xgawro00
 #---------------
 all: 
-	g++ -std=c++17 *.cpp -o $(NAME) -lpcap
+	g++ -std=c++17 *.cpp -o $(NAME) 
 
 zip:
 	tar -cvf $(LOGIN).tar *.cpp *.h *.pdf Makefile
