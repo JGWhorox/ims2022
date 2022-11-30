@@ -1,18 +1,36 @@
 #include "classes.h"
 
-Brigade::remove_dead_units(){
-    for (auto u : units){
-        if (u.state == unit::dead){
-            units.remove(u);
+/*
+use this if you want ot use remove lul
+bool Unit::operator==(const Unit & u){
+    return this->state == u.state;
+}*/
+
+void Brigade::remove_dead_units(){
+    for (auto u = units.begin(); u != units.end() ; ){
+        if (u->dead == Unit::dead){
+            units_died++;
+            units.erase(u++);
         }
+        else
+            u++;
     }
 }
 
-Soldier::Soldier(int u, int a, int f, int at){
-    for (size_t i = 0; i < units; i++)
+int Brigade::ret_current_wounded_size(){
+    int retval = 0;
+    for (auto u : units) {
+        if (u.state == Unit::wounded)
+            retval++; 
+    }
+    return retval;
+}
+
+Infantry::Infantry(int u, int a, int f, int at){
+    for (size_t i = 0; i < u; i++)
     {
         Unit new_unit;
-        new_unit.state == Unit::healthy;
+        new_unit.state = Unit::healthy;
         units.push_back(new_unit);
     }
     ammo = a;
@@ -20,21 +38,21 @@ Soldier::Soldier(int u, int a, int f, int at){
     antitank = at;
 }
 
-Soldier::attack(){
+void Infantry::attack(){
     //TODO
     return;
 }
 
-Soldier::reposition(){
+void Infantry::reposition(){
     //TODO
     return;
 }
 
 Medic::Medic(int u, int a, int f, int m){
-    for (size_t i = 0; i < units; i++)
+    for (size_t i = 0; i < u; i++)
     {
         Unit new_unit;
-        new_unit.state == Unit::healthy;
+        new_unit.state = Unit::healthy;
         units.push_back(new_unit);
     }
     ammo = a;
@@ -42,35 +60,35 @@ Medic::Medic(int u, int a, int f, int m){
     meds = m;
 }
 
-Medic::heal_units(std::list<Unit> units){
-    if (!resources) return;
+void Medic::heal_units(std::list<Unit> units){
+    if (!meds) return;
     
     for (auto u : units){
         if (u.state == Unit::wounded){
             // TODO add randomness here
-            u.state == Unit::healthy;
-            resources--;
+            u.state = Unit::healthy;
+            meds--;
         }
     }
 }
 
 Tank::Tank(int u, int a, int f){
-    for (size_t i = 0; i < units; i++)
+    for (size_t i = 0; i < u; i++)
     {
         Unit new_unit;
-        new_unit.state == Unit::healthy;
+        new_unit.state = Unit::healthy;
         units.push_back(new_unit);
     }
     ammo = a;
     food = f;
 }
 
-Tank::attack(){
+void Tank::attack(){
     //TODO
     return;
 }
 
-Tank::reposition(){
+void Tank::reposition(){
     //TODO
     return;
 }
