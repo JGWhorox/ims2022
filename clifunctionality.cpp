@@ -16,40 +16,38 @@
 
 #include "clifunctionality.h"
 
-using namespace std;
-
-std::vector<string> split(string input){
-    vector<string> retvals;
-    istringstream strStream(input);
-    for(string s; strStream>>s;){
+std::vector<std::string> split(std::string input){
+    std::vector<std::string> retvals;
+    std::istringstream strStream(input);
+    for(std::string s; strStream>>s;){
         retvals.push_back(s);
     }
     return retvals;
 }
 
 void printDebug(const Arguments &args){
-    cout << "############## DEBUG INFO ##############" << endl;
-    cout << args.configBlue << endl;
-    cout << args.configRed << endl;
-    cout << args.configScenario << endl;
-    cout << "############# END OF DEBUG #############" << endl;
+    std::cout << "############## DEBUG INFO ##############" << std::endl;
+    std::cout << args.configBlue << std::endl;
+    std::cout << args.configRed << std::endl;
+    std::cout << args.configScenario << std::endl;
+    std::cout << "############# END OF DEBUG #############" << std::endl;
 }
 
 void printHelp(){
-    cout << "##################################### HELP #####################################" << endl;
-    cout << "\t-h\n\t\t prints help" << endl;
-    cout << "\t-b <filePath>\n\t\tconfig file of team blue - defenders\n\t\tDefault ''" << endl;
-    cout << "\t-r <filePath>\n\t\tconfig file of team red - attackers\n\t\tDefault " << endl;
-    cout << "\t-s <filePath>\n\t\tconfig of scenario map and data\n\t\tDefault " << endl;
-    cout << "################################## END OF HELP #################################" << endl;
+    std::cout << "##################################### HELP #####################################" << std::endl;
+    std::cout << "\t-h\n\t\t prints help" << std::endl;
+    std::cout << "\t-b <filePath>\n\t\tconfig file of team blue - defenders\n\t\tDefault ''" << std::endl;
+    std::cout << "\t-r <filePath>\n\t\tconfig file of team red - attackers\n\t\tDefault " << std::endl;
+    std::cout << "\t-s <filePath>\n\t\tconfig of scenario map and data\n\t\tDefault " << std::endl;
+    std::cout << "################################## END OF HELP #################################" << std::endl;
 }
 
-bool parseArgs(Arguments &args, string input){
+bool parseArgs(Arguments &args, std::string input){
     if(input.empty()){
         return false;
     }
 
-    vector<string> splitInput = split(input);
+    std::vector<std::string> splitInput = split(input);
 
     for(auto it = splitInput.begin(); it != splitInput.end(); ++it){
         //checking for the config files
@@ -69,7 +67,7 @@ bool parseArgs(Arguments &args, string input){
             }
         }
         else{         
-            cerr << "not a defined flag see help for more info:" << endl;
+            std::cerr << "not a defined flag see help for more info:" << std::endl;
             printHelp();
             return false;
         }
