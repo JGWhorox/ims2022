@@ -3050,16 +3050,16 @@ stdblock.o:
 00000000000000e0 T simlib3::Lim::Value()
 0000000000000000 t simlib3::Lim::Value() [clone .cold]
 0000000000000000 T simlib3::Lim::_Eval()
-00000000000005f0 T simlib3::Lim::Lim(simlib3::Input, double, double, double)
-00000000000005f0 T simlib3::Lim::Lim(simlib3::Input, double, double, double)
+0000000000000600 T simlib3::Lim::Lim(simlib3::Input, double, double, double)
+0000000000000600 T simlib3::Lim::Lim(simlib3::Input, double, double, double)
 0000000000000032 t simlib3::Lim::Lim(simlib3::Input, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Lim::~Lim()
 0000000000000000 W simlib3::Lim::~Lim()
 0000000000000000 W simlib3::Lim::~Lim()
 0000000000000000 n simlib3::Lim::~Lim()
 0000000000000010 T simlib3::Hyst::Eval()
-0000000000000a10 T simlib3::Hyst::Hyst(simlib3::Input, double, double, double, double, double)
-0000000000000a10 T simlib3::Hyst::Hyst(simlib3::Input, double, double, double, double, double)
+0000000000000a20 T simlib3::Hyst::Hyst(simlib3::Input, double, double, double, double, double)
+0000000000000a20 T simlib3::Hyst::Hyst(simlib3::Input, double, double, double, double, double)
 00000000000000b2 t simlib3::Hyst::Hyst(simlib3::Input, double, double, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Hyst::~Hyst()
 0000000000000000 W simlib3::Hyst::~Hyst()
@@ -3068,16 +3068,16 @@ stdblock.o:
 0000000000000160 T simlib3::Insv::Value()
 000000000000000a t simlib3::Insv::Value() [clone .cold]
 0000000000000000 T simlib3::Insv::_Eval()
-0000000000000700 T simlib3::Insv::Insv(simlib3::Input, double, double, double, double)
-0000000000000700 T simlib3::Insv::Insv(simlib3::Input, double, double, double, double)
+0000000000000710 T simlib3::Insv::Insv(simlib3::Input, double, double, double, double)
+0000000000000710 T simlib3::Insv::Insv(simlib3::Input, double, double, double, double)
 0000000000000052 t simlib3::Insv::Insv(simlib3::Input, double, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Insv::~Insv()
 0000000000000000 W simlib3::Insv::~Insv()
 0000000000000000 W simlib3::Insv::~Insv()
 0000000000000000 n simlib3::Insv::~Insv()
 0000000000000090 T simlib3::Blash::Eval()
-0000000000000c80 T simlib3::Blash::Blash(simlib3::Input, double, double, double)
-0000000000000c80 T simlib3::Blash::Blash(simlib3::Input, double, double, double)
+0000000000000c90 T simlib3::Blash::Blash(simlib3::Input, double, double, double)
+0000000000000c90 T simlib3::Blash::Blash(simlib3::Input, double, double, double)
 00000000000000d2 t simlib3::Blash::Blash(simlib3::Input, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Blash::~Blash()
 0000000000000000 W simlib3::Blash::~Blash()
@@ -3086,8 +3086,8 @@ stdblock.o:
 00000000000001f0 T simlib3::Frict::Value()
 0000000000000014 t simlib3::Frict::Value() [clone .cold]
 0000000000000000 T simlib3::Frict::_Eval()
-0000000000000900 T simlib3::Frict::Frict(simlib3::Input, double, double, double)
-0000000000000900 T simlib3::Frict::Frict(simlib3::Input, double, double, double)
+0000000000000910 T simlib3::Frict::Frict(simlib3::Input, double, double, double)
+0000000000000910 T simlib3::Frict::Frict(simlib3::Input, double, double, double)
 0000000000000092 t simlib3::Frict::Frict(simlib3::Input, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Frict::~Frict()
 0000000000000000 W simlib3::Frict::~Frict()
@@ -3096,16 +3096,16 @@ stdblock.o:
 0000000000000360 T simlib3::Qntzr::Value()
 0000000000000028 t simlib3::Qntzr::Value() [clone .cold]
 0000000000000000 T simlib3::Qntzr::_Eval()
-0000000000000820 T simlib3::Qntzr::Qntzr(simlib3::Input, double)
-0000000000000820 T simlib3::Qntzr::Qntzr(simlib3::Input, double)
+0000000000000830 T simlib3::Qntzr::Qntzr(simlib3::Input, double)
+0000000000000830 T simlib3::Qntzr::Qntzr(simlib3::Input, double)
 0000000000000072 t simlib3::Qntzr::Qntzr(simlib3::Input, double) [clone .cold]
 0000000000000000 W simlib3::Qntzr::~Qntzr()
 0000000000000000 W simlib3::Qntzr::~Qntzr()
 0000000000000000 W simlib3::Qntzr::~Qntzr()
 0000000000000000 n simlib3::Qntzr::~Qntzr()
-0000000000000470 T simlib3::Relay::Eval()
-0000000000000b40 T simlib3::Relay::Relay(simlib3::Input, double, double, double, double, double, double)
-0000000000000b40 T simlib3::Relay::Relay(simlib3::Input, double, double, double, double, double, double)
+0000000000000480 T simlib3::Relay::Eval()
+0000000000000b50 T simlib3::Relay::Relay(simlib3::Input, double, double, double, double, double, double)
+0000000000000b50 T simlib3::Relay::Relay(simlib3::Input, double, double, double, double, double, double)
 00000000000000c2 t simlib3::Relay::Relay(simlib3::Input, double, double, double, double, double, double) [clone .cold]
 0000000000000000 W simlib3::Relay::~Relay()
 0000000000000000 W simlib3::Relay::~Relay()
@@ -3114,12 +3114,12 @@ stdblock.o:
 0000000000000270 T simlib3::Rline::Value()
 000000000000001e t simlib3::Rline::Value() [clone .cold]
 0000000000000000 T simlib3::Rline::_Eval()
-0000000000000d80 T simlib3::Rline::Rline(simlib3::Input, int, double*, double*)
-0000000000000d80 T simlib3::Rline::Rline(simlib3::Input, int, double*, double*)
+0000000000000d90 T simlib3::Rline::Rline(simlib3::Input, int, double*, double*)
+0000000000000d90 T simlib3::Rline::Rline(simlib3::Input, int, double*, double*)
 00000000000000e2 t simlib3::Rline::Rline(simlib3::Input, int, double*, double*) [clone .cold]
-00000000000005d0 T simlib3::Rline::~Rline()
-0000000000000520 T simlib3::Rline::~Rline()
-0000000000000520 T simlib3::Rline::~Rline()
+00000000000005e0 T simlib3::Rline::~Rline()
+0000000000000530 T simlib3::Rline::~Rline()
+0000000000000530 T simlib3::Rline::~Rline()
                  U simlib3::Status::Value()
                  U simlib3::Status::Status(simlib3::Input, double)
                  U simlib3::Status::~Status()
@@ -3255,24 +3255,24 @@ barrier.o:
 facility.o:
 0000000000000000 r .LC0
 0000000000000010 r .LC1
-000000000000004d r .LC10
-0000000000000050 r .LC12
-0000000000000048 r .LC13
-0000000000000069 r .LC15
-0000000000000080 r .LC17
-000000000000009c r .LC19
-0000000000000022 r .LC2
-0000000000000000 r .LC20
-00000000000000ac r .LC21
-00000000000000c0 r .LC22
-00000000000000d8 r .LC24
-00000000000000e7 r .LC25
+0000000000000075 r .LC11
+0000000000000087 r .LC13
+0000000000000000 r .LC15
+0000000000000098 r .LC16
+00000000000000ad r .LC17
+00000000000000b0 r .LC18
+0000000000000020 r .LC2
+00000000000000b3 r .LC20
+0000000000000048 r .LC21
+00000000000000cc r .LC23
+00000000000000e3 r .LC25
 00000000000000ff r .LC27
 0000000000000078 r .LC29
-0000000000000024 r .LC4
-0000000000000000 r .LC6
-0000000000000035 r .LC8
-000000000000004a r .LC9
+0000000000000000 r .LC3
+0000000000000022 r .LC4
+0000000000000036 r .LC5
+000000000000004e r .LC7
+000000000000005d r .LC9
 0000000000000000 V DW.ref.__gxx_personality_v0
                  U _GLOBAL_OFFSET_TABLE_
 0000000000000000 t _GLOBAL__sub_I_facility.cc
@@ -3298,27 +3298,27 @@ facility.o:
                  U simlib3::Current
 0000000000000ff0 T simlib3::Facility::Clear()
 00000000000001d4 t simlib3::Facility::Clear() [clone .cold]
-0000000000000a60 T simlib3::Facility::Seize(simlib3::Entity*, unsigned char)
-000000000000014c t simlib3::Facility::Seize(simlib3::Entity*, unsigned char) [clone .cold]
-0000000000000000 T simlib3::Facility::QueueIn(simlib3::Entity*, unsigned char)
-0000000000000000 t simlib3::Facility::QueueIn(simlib3::Entity*, unsigned char) [clone .cold]
-0000000000000d30 T simlib3::Facility::Release(simlib3::Entity*)
-0000000000000190 t simlib3::Facility::Release(simlib3::Entity*) [clone .cold]
-0000000000000190 T simlib3::Facility::QueueIn2(simlib3::Entity*)
-0000000000000030 t simlib3::Facility::QueueIn2(simlib3::Entity*) [clone .cold]
-0000000000000310 T simlib3::Facility::SetQueue(simlib3::Queue*)
-0000000000000480 T simlib3::Facility::Facility(char const*)
-00000000000007f0 T simlib3::Facility::Facility(char const*, simlib3::Queue*)
-00000000000006a0 T simlib3::Facility::Facility(simlib3::Queue*)
-0000000000000370 T simlib3::Facility::Facility()
-0000000000000480 T simlib3::Facility::Facility(char const*)
-000000000000008e t simlib3::Facility::Facility(char const*) [clone .cold]
-00000000000007f0 T simlib3::Facility::Facility(char const*, simlib3::Queue*)
-0000000000000102 t simlib3::Facility::Facility(char const*, simlib3::Queue*) [clone .cold]
-00000000000006a0 T simlib3::Facility::Facility(simlib3::Queue*)
-00000000000000cc t simlib3::Facility::Facility(simlib3::Queue*) [clone .cold]
-0000000000000370 T simlib3::Facility::Facility()
-0000000000000060 t simlib3::Facility::Facility() [clone .cold]
+0000000000000000 T simlib3::Facility::Seize(simlib3::Entity*, unsigned char)
+0000000000000000 t simlib3::Facility::Seize(simlib3::Entity*, unsigned char) [clone .cold]
+0000000000000590 T simlib3::Facility::QueueIn(simlib3::Entity*, unsigned char)
+0000000000000088 t simlib3::Facility::QueueIn(simlib3::Entity*, unsigned char) [clone .cold]
+00000000000002d0 T simlib3::Facility::Release(simlib3::Entity*)
+0000000000000044 t simlib3::Facility::Release(simlib3::Entity*) [clone .cold]
+0000000000000720 T simlib3::Facility::QueueIn2(simlib3::Entity*)
+00000000000000b8 t simlib3::Facility::QueueIn2(simlib3::Entity*) [clone .cold]
+00000000000008a0 T simlib3::Facility::SetQueue(simlib3::Queue*)
+0000000000000a10 T simlib3::Facility::Facility(char const*)
+0000000000000d80 T simlib3::Facility::Facility(char const*, simlib3::Queue*)
+0000000000000c30 T simlib3::Facility::Facility(simlib3::Queue*)
+0000000000000900 T simlib3::Facility::Facility()
+0000000000000a10 T simlib3::Facility::Facility(char const*)
+0000000000000116 t simlib3::Facility::Facility(char const*) [clone .cold]
+0000000000000d80 T simlib3::Facility::Facility(char const*, simlib3::Queue*)
+000000000000018a t simlib3::Facility::Facility(char const*, simlib3::Queue*) [clone .cold]
+0000000000000c30 T simlib3::Facility::Facility(simlib3::Queue*)
+0000000000000154 t simlib3::Facility::Facility(simlib3::Queue*) [clone .cold]
+0000000000000900 T simlib3::Facility::Facility()
+00000000000000e8 t simlib3::Facility::Facility() [clone .cold]
 00000000000011e0 T simlib3::Facility::~Facility()
 00000000000010e0 T simlib3::Facility::~Facility()
 00000000000010e0 T simlib3::Facility::~Facility()
@@ -3329,7 +3329,7 @@ facility.o:
                  U simlib3::SimObject::operator new(unsigned long)
 0000000000000000 b simlib3::SIMLIB_module_id
                  U simlib3::Facility::Output() const
-0000000000000300 T simlib3::Facility::OwnQueue() const
+0000000000000890 T simlib3::Facility::OwnQueue() const
                  U simlib3::SimObject::Name[abi:cxx11]() const
                  U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long)
                  U std::__throw_logic_error(char const*)
@@ -3598,21 +3598,21 @@ process.o:
 queue.o:
 0000000000000000 r .LC0
 0000000000000010 r .LC1
-0000000000000042 r .LC10
-0000000000000048 r .LC11
-0000000000000059 r .LC13
-0000000000000076 r .LC14
-000000000000008d r .LC16
-000000000000009c r .LC18
-000000000000001f r .LC2
-00000000000000ad r .LC20
-00000000000000bd r .LC22
-00000000000000d1 r .LC23
+0000000000000059 r .LC10
+000000000000006d r .LC11
+0000000000000076 r .LC13
+0000000000000085 r .LC15
+0000000000000000 r .LC17
+0000000000000093 r .LC19
+0000000000000027 r .LC2
+00000000000000a6 r .LC21
+0000000000000048 r .LC22
+00000000000000bd r .LC24
 00000000000000da r .LC25
 00000000000000ea r .LC27
-0000000000000021 r .LC4
-0000000000000000 r .LC6
-000000000000002f r .LC8
+0000000000000029 r .LC4
+0000000000000038 r .LC6
+0000000000000049 r .LC8
 0000000000000000 V DW.ref.__gxx_personality_v0
                  U _GLOBAL_OFFSET_TABLE_
 0000000000000000 t _GLOBAL__sub_I_queue.cc
@@ -3640,29 +3640,29 @@ queue.o:
 000000000000017e t simlib3::Queue::Get(simlib3::List::iterator) [clone .cold]
 0000000000000c90 T simlib3::Queue::clear()
 000000000000019a t simlib3::Queue::clear() [clone .cold]
-00000000000006c0 T simlib3::Queue::Insert(simlib3::Entity*)
-00000000000000be t simlib3::Queue::Insert(simlib3::Entity*) [clone .cold]
-00000000000000e0 T simlib3::Queue::GetLast()
-000000000000001c t simlib3::Queue::GetLast() [clone .cold]
-0000000000000910 T simlib3::Queue::InsLast(simlib3::Entity*)
-000000000000011e t simlib3::Queue::InsLast(simlib3::Entity*) [clone .cold]
-0000000000000a20 T simlib3::Queue::PostIns(simlib3::Entity*, simlib3::List::iterator)
-000000000000014e t simlib3::Queue::PostIns(simlib3::Entity*, simlib3::List::iterator) [clone .cold]
-0000000000000570 T simlib3::Queue::PredIns(simlib3::Entity*, simlib3::List::iterator)
-000000000000008e t simlib3::Queue::PredIns(simlib3::Entity*, simlib3::List::iterator) [clone .cold]
-0000000000000000 T simlib3::Queue::GetFirst()
-0000000000000000 t simlib3::Queue::GetFirst() [clone .cold]
-0000000000000800 T simlib3::Queue::InsFirst(simlib3::Entity*)
-00000000000000ee t simlib3::Queue::InsFirst(simlib3::Entity*) [clone .cold]
-0000000000000290 T simlib3::Queue::Queue(char const*)
-00000000000001c0 T simlib3::Queue::Queue()
-0000000000000290 T simlib3::Queue::Queue(char const*)
-000000000000005c t simlib3::Queue::Queue(char const*) [clone .cold]
-00000000000001c0 T simlib3::Queue::Queue()
-0000000000000038 t simlib3::Queue::Queue() [clone .cold]
-0000000000000550 T simlib3::Queue::~Queue()
-0000000000000470 T simlib3::Queue::~Queue()
-0000000000000470 T simlib3::Queue::~Queue()
+0000000000000150 T simlib3::Queue::Insert(simlib3::Entity*)
+0000000000000030 t simlib3::Queue::Insert(simlib3::Entity*) [clone .cold]
+00000000000006e0 T simlib3::Queue::GetLast()
+000000000000010c t simlib3::Queue::GetLast() [clone .cold]
+00000000000003a0 T simlib3::Queue::InsLast(simlib3::Entity*)
+0000000000000090 t simlib3::Queue::InsLast(simlib3::Entity*) [clone .cold]
+00000000000004b0 T simlib3::Queue::PostIns(simlib3::Entity*, simlib3::List::iterator)
+00000000000000c0 t simlib3::Queue::PostIns(simlib3::Entity*, simlib3::List::iterator) [clone .cold]
+0000000000000000 T simlib3::Queue::PredIns(simlib3::Entity*, simlib3::List::iterator)
+0000000000000000 t simlib3::Queue::PredIns(simlib3::Entity*, simlib3::List::iterator) [clone .cold]
+0000000000000600 T simlib3::Queue::GetFirst()
+00000000000000f0 t simlib3::Queue::GetFirst() [clone .cold]
+0000000000000290 T simlib3::Queue::InsFirst(simlib3::Entity*)
+0000000000000060 t simlib3::Queue::InsFirst(simlib3::Entity*) [clone .cold]
+0000000000000890 T simlib3::Queue::Queue(char const*)
+00000000000007c0 T simlib3::Queue::Queue()
+0000000000000890 T simlib3::Queue::Queue(char const*)
+000000000000014c t simlib3::Queue::Queue(char const*) [clone .cold]
+00000000000007c0 T simlib3::Queue::Queue()
+0000000000000128 t simlib3::Queue::Queue() [clone .cold]
+0000000000000b50 T simlib3::Queue::~Queue()
+0000000000000a70 T simlib3::Queue::~Queue()
+0000000000000a70 T simlib3::Queue::~Queue()
                  U simlib3::TStat::Clear(double)
                  U simlib3::TStat::TStat(double)
                  U simlib3::TStat::~TStat()
@@ -3877,20 +3877,20 @@ stat.o:
 store.o:
 0000000000000000 r .LC0
 0000000000000010 r .LC1
-000000000000004f r .LC11
-0000000000000048 r .LC12
-0000000000000066 r .LC14
-0000000000000078 r .LC16
-000000000000007b r .LC18
+0000000000000067 r .LC10
+0000000000000069 r .LC12
+0000000000000078 r .LC14
+000000000000008a r .LC16
+0000000000000048 r .LC17
+00000000000000a1 r .LC19
 000000000000002a r .LC2
-000000000000008c r .LC20
-000000000000009a r .LC21
+0000000000000078 r .LC21
 00000000000000b6 r .LC23
 00000000000000c1 r .LC25
-0000000000000000 r .LC4
-000000000000002c r .LC5
-000000000000002e r .LC7
-000000000000003d r .LC9
+000000000000002c r .LC4
+000000000000003d r .LC6
+000000000000004b r .LC7
+0000000000000000 r .LC9
 0000000000000000 V DW.ref.__gxx_personality_v0
                  U _GLOBAL_OFFSET_TABLE_
 0000000000000000 t _GLOBAL__sub_I_store.cc
@@ -3905,31 +3905,31 @@ store.o:
                  U simlib3::Time
                  U simlib3::Queue::clear()
                  U simlib3::Queue::Queue(char const*)
-0000000000000110 T simlib3::Store::SetCapacity(unsigned long)
+0000000000000570 T simlib3::Store::SetCapacity(unsigned long)
 0000000000000d60 T simlib3::Store::Clear()
 0000000000000174 t simlib3::Store::Clear() [clone .cold]
-0000000000000900 T simlib3::Store::Enter(simlib3::Entity*, unsigned long)
-0000000000000114 t simlib3::Store::Enter(simlib3::Entity*, unsigned long) [clone .cold]
-0000000000000ab0 T simlib3::Store::Leave(unsigned long)
-0000000000000144 t simlib3::Store::Leave(unsigned long) [clone .cold]
+0000000000000110 T simlib3::Store::Enter(simlib3::Entity*, unsigned long)
+0000000000000030 t simlib3::Store::Enter(simlib3::Entity*, unsigned long) [clone .cold]
+00000000000002c0 T simlib3::Store::Leave(unsigned long)
+0000000000000060 t simlib3::Store::Leave(unsigned long) [clone .cold]
 0000000000000000 T simlib3::Store::QueueIn(simlib3::Entity*, unsigned long)
 0000000000000000 t simlib3::Store::QueueIn(simlib3::Entity*, unsigned long) [clone .cold]
-0000000000000150 T simlib3::Store::SetQueue(simlib3::Queue*)
-0000000000000380 T simlib3::Store::Store(char const*, unsigned long)
-00000000000006b0 T simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*)
-0000000000000290 T simlib3::Store::Store(unsigned long)
-0000000000000580 T simlib3::Store::Store(unsigned long, simlib3::Queue*)
-00000000000001b0 T simlib3::Store::Store()
-0000000000000380 T simlib3::Store::Store(char const*, unsigned long)
-0000000000000074 t simlib3::Store::Store(char const*, unsigned long) [clone .cold]
-00000000000006b0 T simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*)
-00000000000000d4 t simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*) [clone .cold]
-0000000000000290 T simlib3::Store::Store(unsigned long)
-0000000000000052 t simlib3::Store::Store(unsigned long) [clone .cold]
-0000000000000580 T simlib3::Store::Store(unsigned long, simlib3::Queue*)
-00000000000000a8 t simlib3::Store::Store(unsigned long, simlib3::Queue*) [clone .cold]
-00000000000001b0 T simlib3::Store::Store()
-0000000000000030 t simlib3::Store::Store() [clone .cold]
+00000000000005b0 T simlib3::Store::SetQueue(simlib3::Queue*)
+00000000000007e0 T simlib3::Store::Store(char const*, unsigned long)
+0000000000000b10 T simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*)
+00000000000006f0 T simlib3::Store::Store(unsigned long)
+00000000000009e0 T simlib3::Store::Store(unsigned long, simlib3::Queue*)
+0000000000000610 T simlib3::Store::Store()
+00000000000007e0 T simlib3::Store::Store(char const*, unsigned long)
+00000000000000d4 t simlib3::Store::Store(char const*, unsigned long) [clone .cold]
+0000000000000b10 T simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*)
+0000000000000134 t simlib3::Store::Store(char const*, unsigned long, simlib3::Queue*) [clone .cold]
+00000000000006f0 T simlib3::Store::Store(unsigned long)
+00000000000000b2 t simlib3::Store::Store(unsigned long) [clone .cold]
+00000000000009e0 T simlib3::Store::Store(unsigned long, simlib3::Queue*)
+0000000000000108 t simlib3::Store::Store(unsigned long, simlib3::Queue*) [clone .cold]
+0000000000000610 T simlib3::Store::Store()
+0000000000000090 t simlib3::Store::Store() [clone .cold]
 0000000000000f30 T simlib3::Store::~Store()
 0000000000000e40 T simlib3::Store::~Store()
 0000000000000e40 T simlib3::Store::~Store()
@@ -3946,7 +3946,7 @@ store.o:
                  U simlib3::SimObject::operator new(unsigned long)
 0000000000000000 b simlib3::SIMLIB_module_id
                  U simlib3::Store::Output() const
-0000000000000140 T simlib3::Store::OwnQueue() const
+00000000000005a0 T simlib3::Store::OwnQueue() const
                  U simlib3::SimObject::Name[abi:cxx11]() const
                  U std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long)
                  U std::__throw_logic_error(char const*)
