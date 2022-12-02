@@ -6,7 +6,7 @@ bool Unit::operator==(const Unit & u){
     return this->state == u.state;
 }*/
 
-void Brigade::remove_dead_units(){
+void Company::remove_dead_units(){
     for (auto u = units.begin(); u != units.end() ; ){
         if (u->dead == Unit::dead){
             units_died++;
@@ -17,7 +17,7 @@ void Brigade::remove_dead_units(){
     }
 }
 
-int Brigade::ret_current_wounded_size(){
+int Company::ret_current_wounded_size(){
     int retval = 0;
     for (auto u : units) {
         if (u.state == Unit::wounded)
@@ -48,7 +48,7 @@ void Infantry::reposition(){
     return;
 }
 
-Medic::Medic(int u, int a, int f, int m){
+CombatSupport::CombatSupport(int u, int a, int f, int m){
     for (size_t i = 0; i < u; i++)
     {
         Unit new_unit;
@@ -60,7 +60,7 @@ Medic::Medic(int u, int a, int f, int m){
     meds = m;
 }
 
-void Medic::heal_units(std::list<Unit> units){
+void CombatSupport::heal_units(std::list<Unit> units){
     if (!meds) return;
     
     for (auto u : units){
