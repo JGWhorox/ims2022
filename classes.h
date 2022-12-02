@@ -16,7 +16,7 @@ class Unit {
     
 };
 
-class Brigade {
+class Company {
   public:
     std::list<Unit> units; // number of units
     int ammo; // the amount of ammo
@@ -30,8 +30,33 @@ class Brigade {
     int ret_current_wounded_size();
 };
 
+class Battalion {
+  public:
+  std::list<Company> companies; 
+  std::pair<int x, int y>;
+  bool in_fight = false;
+  bool preparing_for_attack = false;
+  bool moving = false;
+  bool fortifying_or_recon = false;
+  
+  int countHistoricalDead();
+  bool addCompany(Company com);
+  bool removeCompany(Company com);
+
+};
+
+class Army {
+  public:
+  std::list<Battalion> battalions;
+  int logistics_effectivity = 100;
+  int ammo_supply;
+  int food_supply;
+  int antitank_supply;
+
+};
+
 // child classes
-class Infantry: public Brigade {
+class Infantry: public Company {
     public:
         int antitank; // amount of antitank resources
 
@@ -40,15 +65,15 @@ class Infantry: public Brigade {
         void reposition();
 };
 
-class Medic: public Brigade {
+class CombatSupport: public Company {
     public:
         int meds; // healing resources
 
-        Medic(int u, int a, int f, int m);
+        CombatSupport(int u, int a, int f, int m);
         void heal_units(std::list<Unit>);
 };
 
-class Tank: public Brigade {
+class Tank: public Company {
     public:
         Tank(int u, int a, int f);
         void attack();

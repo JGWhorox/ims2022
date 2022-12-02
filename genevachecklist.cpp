@@ -31,6 +31,16 @@ int main(int argc, char** argv){
         return -1;
     }
 
+    //parseConfigs
+
+    //loadArmies
+    
+    //setupScenario
+
+    
+    //executeSim
+    
+
 
     
     return 0;
