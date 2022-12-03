@@ -5,7 +5,7 @@
 
 #include "mapgenerator.h"
 
-MyMap::MyMap(){};
+MyMap::MyMap(){}
 
 MyMap::MyMap(int x, int y){
     GenerateMyMap(x,y);
@@ -44,6 +44,8 @@ void MyMap::set_blue_line(std::list<std::pair<int, int>> blue_line){
         set_fortification(coords);
     }
 }
+
+Cell::Cell(){}
 
 Cell::Cell(int x, int y){
     posx = x;

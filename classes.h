@@ -41,10 +41,13 @@ class Battalion {
   bool fortifying_or_recon = false;
   //int time_of_last_action
   int armyID;
+  bool is_backup;
+  int backup_timeout;
   
   int countHistoricalDead();
   bool addCompany(Company com);
   bool removeCompany(Company com);
+  void call_backup(Army army);
 
 };
 

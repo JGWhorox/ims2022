@@ -27,7 +27,21 @@ Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, i
     return b;
 }
 
-
+void Battalion::call_backup(Army army){
+    Battalion closest_bat;
+    closest_bat.position.first = -1;
+    for (auto bat: army.battalions){
+        if (bat.in_fight) continue;
+        if (closest_bat.position.first = -1) {
+            closest_bat = bat;
+            continue;
+        }
+        
+        if (bat.position.first < closest_bat.position.first) closest_bat = bat;
+    }
+    
+    //backup logic
+}
 
 void Company::remove_dead_units(){
     for (auto u = units.begin(); u != units.end() ; ){

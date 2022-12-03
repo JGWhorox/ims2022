@@ -15,6 +15,7 @@ class Cell{
         enum Occupations {neutral, blue, red};
         Occupations occupation;
 
+        Cell();
         Cell(int x, int y);
 };
 
