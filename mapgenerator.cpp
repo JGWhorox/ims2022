@@ -5,7 +5,13 @@
 
 #include "mapgenerator.h"
 
-MyMap::MyMap(int x_size, int y_size){
+MyMap::MyMap(){};
+
+MyMap::MyMap(int x, int y){
+    GenerateMyMap(x,y);
+};
+
+void MyMap::GenerateMyMap(int x_size, int y_size){
     for (size_t i = 0; i < x_size; i++)
     {
         for (size_t j = 0; j < y_size; j++)

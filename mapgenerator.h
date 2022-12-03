@@ -22,7 +22,9 @@ class MyMap{
     public:
         std::map<std::pair<int, int>, Cell> cells;
 
-        MyMap(int x_size, int y_size);
+        MyMap();
+        MyMap(int x, int y);
+        void GenerateMyMap(int x_size, int y_size);
         Cell get_cell(std::pair<int, int> coords);
         void set_occupation(std::pair<int, int> coords, Cell::Occupations occup);
         void set_fortification(std::pair<int, int> coords);

@@ -39,6 +39,7 @@ class Battalion {
   bool preparing_for_attack = false;
   bool moving = false;
   bool fortifying_or_recon = false;
+  //int time_of_last_action
   int armyID;
   
   int countHistoricalDead();
