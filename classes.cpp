@@ -46,6 +46,7 @@ int Battalion::get_base_attack_power(){
     }
     return retval;
 }
+//debug
 
 
 
