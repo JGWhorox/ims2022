@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <string>
 
+#include <vector>
+
 #include "genevachecklist.h"
 #include "mapgenerator.h"
 #include "classes.h"
@@ -33,15 +35,19 @@ int main(int argc, char** argv){
         return -1;
     }
     //setupScenario
-    MyMap map(25,25);
+
+    int map_size_x = 10;
+    int map_size_y = 10;
+    MyMap map(map_size_x,map_size_y);
     std::list<std::pair<int, int>> blue_line;
-    for (size_t y = 0; y < 25; y++)
+    for (size_t y = 0; y < map_size_y; y++)
     {
-        //change for different generation
-        if (y < 15){
-            blue_line.push_back(std::make_pair(3,y));
+        //change for different generation 
+        //default moves line one cell to the right after middle point
+        if (y < map_size_y/2){
+            blue_line.push_back(std::make_pair(map_size_x/3,y));
         } else {
-            blue_line.push_back(std::make_pair(4,y));
+            blue_line.push_back(std::make_pair(map_size_x/3+1,y));
         }
     }
     map.set_blue_line(blue_line);
@@ -56,7 +62,7 @@ int main(int argc, char** argv){
     blueArmy.armyID = 1;
     redArmy.armyID = 2;
 
-    //config of resources
+    //config of national resources
     blueArmy.ammo_supplies = 5000;
     blueArmy.antitank_supplies = 500;
     blueArmy.combat_supplies = 5000;
@@ -67,19 +73,23 @@ int main(int argc, char** argv){
     redArmy.combat_supplies = 5000;
     redArmy.food_supplies = 10000;
 
-    blueArmy.logistics_effectivity = 95;
-    redArmy.logistics_effectivity = 80;
+    blueArmy.logistics_effectivity = 0.95;
+    redArmy.logistics_effectivity = 0.80;
 
-    //config of army sizes
-    blueArmy.battalions.push_back(generate_batalion(4,150,1,50,1,10,blueArmy.armyID)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
-    blueArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,blueArmy.armyID));
-    blueArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,blueArmy.armyID));
-    blueArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,blueArmy.armyID));
+    //config of army sizes and
+    //config initial position armies on the mapmake_pair(1,1)
+    blueArmy.battalions.push_back(generate_battalion(4,150,1,50,1,10,blueArmy.armyID,map_size_x/3,2)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3,4));
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,6));
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,8));
     
-    redArmy.battalions.push_back(generate_batalion(4,150,1,50,1,10,redArmy.armyID));
-    redArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,redArmy.armyID));
-    redArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,redArmy.armyID));
-    redArmy.battalions.push_back(generate_batalion(5,130,1,50,0,0,redArmy.armyID));
+    redArmy.battalions.push_back(generate_battalion(4,150,1,50,1,10,redArmy.armyID,map_size_x,2));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,4));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,6));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,8));
+
+
+    
 
     
     //executeSim(blueArmy, redArmy, map, 720/*1 month in hours*/);

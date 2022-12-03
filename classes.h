@@ -50,7 +50,7 @@ class Battalion {
 class Army {
   public:
   std::list<Battalion> battalions;
-  int logistics_effectivity = 100;
+  double logistics_effectivity = 1;
   int ammo_supplies;
   int food_supplies;
   int combat_supplies;
@@ -84,6 +84,6 @@ class Tank: public Company {
         void reposition();
 };
 
-Battalion generate_batalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID);
+Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID, int posx, int posy);
 
 #endif
