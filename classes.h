@@ -47,12 +47,15 @@ class Battalion {
   bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 
   int armyID;
+  bool is_backup;
+  int backup_timeout;
   Battalion* enemy_Battalion;
   int attack_power;
   
   int countHistoricalDead();
   bool addCompany(Company com);
   bool removeCompany(Company com);
+  void call_backup(Army army);
   int get_base_attack_power();
 
 };
