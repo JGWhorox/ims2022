@@ -1,6 +1,7 @@
 #include <list>
 
 #include "classes.h"
+#include "mapgenerator.h"
 
-
-int executeSim(/*blueArmy,redArmy,map,timeframe*/Army blueArmy, Army redArmy, int timeframe);
+/*blueArmy,redArmy,map,timeframe*/
+int executeSim(Army blueArmy, Army redArmy, MyMap scenario, int timeframe);
