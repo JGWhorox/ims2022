@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "classes.h"
 
 /*
@@ -46,7 +47,43 @@ void Battalion::call_backup(Army army){
         if (bat.position.first < closest_bat.position.first) closest_bat = bat;
     }
     
-    //backup logic
+    int Inf;
+    int Inf_size; 
+    int Cs;
+    int Cs_size;
+    int T;
+    int T_size;
+    int armyID = closest_bat.armyID;
+    int posx = position.first;
+    int posy = position.second;
+    for (auto comp : closest_bat.companies) {
+        switch (comp->type)
+        {
+        case Company::infantry:
+            Inf += 1;
+            Inf_size = comp->units.size() / 2;
+            break;
+        case Company::combat_support:
+            Cs += 1;
+            Cs_size = comp->units.size() / 2;
+            break;
+        case Company::tank:
+            T += 1;
+            T_size = comp->units.size() / 2;
+            break;
+        }
+
+        for (int i = 0; i < comp->units.size() / 2; i++){
+            comp->units.pop_front();
+            comp->units_reinforced_other_battalion += 1;
+        }
+    }
+
+    Battalion backup = generate_battalion(Inf, Inf_size, Cs, Cs_size, T, T_size, armyID, posx, posy);
+    backup.is_backup = true;
+    backup.backup_timeout = abs(backup.position.first - closest_bat.position.first) * 3;
+    army.battalions.push_back(backup);
+
 }
 
 int Battalion::get_base_attack_power(){
