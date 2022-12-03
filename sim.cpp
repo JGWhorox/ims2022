@@ -8,10 +8,13 @@
 int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
     
     //vkladanie na mapu
-    
-    
-    
-    
+    for(auto battalion : blueArmy.battalions){
+        scenario.set_occupation(battalion.position, Cell::blue);
+    }
+    for(auto battalion : redArmy.battalions){
+        scenario.set_occupation(battalion.position, Cell::red);
+    }
+
 
     for (int hour=0; hour <= timeframe; hour++){
         
