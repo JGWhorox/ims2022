@@ -28,8 +28,9 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
         }
         
         //eating
-        if(hour % 12 == 0){
+        if(hour % 8 == 0){
             for ( auto b : blueArmy.battalions ){
+                //TANK MUSI ZRAT VIAC
                 for ( auto c : b.companies ){
                     int number_of_units = c->units.size();
                     int number_of_wounded = c->ret_current_wounded_size();

@@ -7,20 +7,23 @@ bool Unit::operator==(const Unit & u){
 }*/
 
 
-Battalion generate_batalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID){
+Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID, int posx, int posy){
     Battalion b;
     for (int i = 0; i < Inf; i++){
-        b.companies.push_back(new Infantry(Inf_size,Inf_size*5,Inf_size*3,Inf_size/10));
+        b.companies.push_back(new Infantry(Inf_size,Inf_size*5,Inf_size*9,Inf_size/10));
     }
 
     for (int i = 0; i < Cs; i++){
-        b.companies.push_back(new CombatSupport(Cs_size,Cs_size*3,Cs_size*3,Cs_size));
+        b.companies.push_back(new CombatSupport(Cs_size,Cs_size*3,Cs_size*9,Cs_size));
     }
 
     for (int i = 0; i < T; i++){
-        b.companies.push_back(new Tank(T_size,T_size*5,T_size*12));
+        b.companies.push_back(new Tank(T_size,T_size*5,T_size*36));
     }
+
     b.armyID = armyID;
+    b.position = std::make_pair(posx,posy);
+    
     return b;
 }
 
