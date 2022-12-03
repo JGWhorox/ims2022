@@ -34,7 +34,7 @@ class Company {
 class Battalion {
   public:
   std::list<Company*> companies; 
-  std::pair<int, int> x, y;
+  std::pair<int, int> position;
   bool in_fight = false;
   bool preparing_for_attack = false;
   bool moving = false;
