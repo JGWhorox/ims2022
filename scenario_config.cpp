@@ -39,9 +39,6 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
     map.set_blue_line(blue_line);
 
     //configure armies 
-    Army blueArmy;
-    Army redArmy;
-    
     //scuffed way of identifying armies in simulation algorithm #temporary #make your life easier, not harder
     blueArmy.armyID = 1;
     redArmy.armyID = 2;
