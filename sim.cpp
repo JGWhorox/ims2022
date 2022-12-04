@@ -16,7 +16,6 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
         scenario.set_occupation(battalion.position, Cell::red);
     }
 
-
     for (int hour=0; hour <= timeframe; hour++){
 
         //get all battalions into 1 poitner list so I can randomize their engagements
@@ -76,6 +75,8 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             if(b->in_fight){
                 //engagement logic
                 if (b->armyID = redArmy.armyID){
+                    
+                    b->enemy_Battalion->in_fight = true;
                     
                     //##### config section #####
                     double crit_f = 0.005;
@@ -174,9 +175,20 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.5-blue_cover);
                     red_casualties = (double)blue_true_shots_fired*blue_DMGmodifier*(1.5-red_cover);
 
-                    //updates battalions after each hours conflict
-                    b->enemy_Battalion->update_battalion(blue_casualties,blue_munitions_lost,blue_supplies_lost,blue_survival_modifier,hour);
-                    b->update_battalion(red_casualties,red_munitions_lost,red_supplies_lost,red_survival_modifier,hour);
+                    //updates battalions after each hour in conflict
+                    if (!b->enemy_Battalion->update_battalion(blue_casualties,blue_munitions_lost,blue_supplies_lost,blue_survival_modifier,hour)){
+                        //blue battalion doesnt have healthy units
+                        b->enemy_Battalion->in_fight = false;
+                        b->in_fight = false;
+                    }
+                        
+                    if (!b->update_battalion(red_casualties,red_munitions_lost,red_supplies_lost,red_survival_modifier,hour)){
+                        //red battalion doesnt have healthy units
+                        b->enemy_Battalion->in_fight = false;
+                        b->in_fight = false;
+                        b->position = std::make_pair(scenario.max_x,b->position.second);
+                    }
+                        
 
                 }
             }

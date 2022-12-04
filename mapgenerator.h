@@ -22,7 +22,8 @@ class Cell{
 class MyMap{
     public:
         std::map<std::pair<int, int>, Cell> cells;
-
+        
+        int max_x;
         MyMap();
         MyMap(int x, int y);
         void GenerateMyMap(int x_size, int y_size);
@@ -30,6 +31,7 @@ class MyMap{
         void set_occupation(std::pair<int, int> coords, Cell::Occupations occup);
         void set_fortification(std::pair<int, int> coords);
         void set_blue_line(std::list<std::pair<int, int>> blue_line);
+        int get_max_x();
         
 };
 

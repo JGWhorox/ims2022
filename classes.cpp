@@ -90,7 +90,7 @@ void Battalion::call_backup(Army army){
 
 }
 
-void Battalion::update_battalion(double casualties, int munition_lost, int supplies_lost, double survival_modifier, int hour){
+bool Battalion::update_battalion(double casualties, int munition_lost, int supplies_lost, double survival_modifier, int hour){
     //int number_of_companies = battalion.get_number_of_companies();
     
     //std::vector<Company*> companies_vector;
@@ -100,10 +100,14 @@ void Battalion::update_battalion(double casualties, int munition_lost, int suppl
         c->DMG_taken += casualties/(double)c->ret_current_healthy_size();
         c->ammo -= munition_lost/(double)c->ret_current_healthy_size();
         c->supplies -= supplies_lost/(double)c->ret_current_healthy_size();
-        
+
         while (c->DMG_taken >= 1.0){
             auto x = Random();
             auto u = c->ret_healthy_unit();
+
+            if (u == nullptr){
+                return false;
+            }
 
             if (x < 0.18*survival_modifier){
                 u->state == Unit::dead;
@@ -117,6 +121,7 @@ void Battalion::update_battalion(double casualties, int munition_lost, int suppl
             c->DMG_taken -= 1.0;
         }
     }
+    return true;
     
 }
 
@@ -158,7 +163,7 @@ void Company::remove_dead_units(){
     }
 }
 Unit* Company::ret_healthy_unit(){
-    for (auto u : this->units){
+    for (auto &u : this->units){
         if (u.state == Unit::healthy){
             return &u;
         }

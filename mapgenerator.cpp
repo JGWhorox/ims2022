@@ -12,6 +12,7 @@ MyMap::MyMap(int x, int y){
 };
 
 void MyMap::GenerateMyMap(int x_size, int y_size){
+    this->max_x = x_size-1;
     for (size_t i = 0; i < x_size; i++)
     {
         for (size_t j = 0; j < y_size; j++)
