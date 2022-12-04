@@ -21,9 +21,12 @@ class Company {
     enum Type {infantry, combat_support, tank};
     Type type;
     
-    int ammo; // the amount of ammo
-    int food; // the amount of food
-    int supplies;
+    double DMG_taken = 0.0;
+
+    double ammo; // the amount of ammo
+    double food; // the amount of food
+    double supplies;
+
     int units_died = 0;
     int units_wounded = 0;
     int units_recovered = 0;
@@ -34,6 +37,8 @@ class Company {
     void add_units(int amount);
     void remove_dead_units();
     int ret_current_wounded_size();
+    int ret_current_healthy_size();
+    Unit* ret_healthy_unit();
     
     void heal_units(std::list<Unit>);
 };
@@ -53,10 +58,15 @@ class Battalion {
   Battalion* enemy_Battalion;
   int attack_power;
   
-  int countHistoricalDead();
+  
   bool addCompany(Company com);
   bool removeCompany(Company com);
+  
   void call_backup(Army army);
+  void update_battalion(double casualties, int munition_lost, int supplies_lost, double modifier, int hour);
+  
+  int countHistoricalDead();
+  int get_number_of_companies();
   int get_base_attack_power();
   int get_number_of_healthy_units();
 
@@ -70,10 +80,10 @@ class Army {
   double professionalism; // 0 - 1
   double technology_level; // 1 - 4.99 - 1 = first muskets, 2 = napoleonic wars, 3 = WW2, 4 = around 90's - 00's
 
-  int ammo_supplies;
-  int food_supplies;
-  int combat_supplies;
-  int antitank_supplies;
+  double ammo_supplies;
+  double food_supplies;
+  double combat_supplies;
+  //int antitank_supplies;
   int armyID;
 
 };

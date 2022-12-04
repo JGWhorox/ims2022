@@ -44,15 +44,13 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
     redArmy.armyID = 2;
 
     //config of national resources
-    blueArmy.ammo_supplies = 5000;
-    blueArmy.antitank_supplies = 500;
-    blueArmy.combat_supplies = 5000;
-    blueArmy.food_supplies = 10000;
+    blueArmy.ammo_supplies = 5000.0;
+    blueArmy.combat_supplies = 5000.0;
+    blueArmy.food_supplies = 10000.0;
 
-    redArmy.ammo_supplies = 5000;
-    redArmy.antitank_supplies = 500;
-    redArmy.combat_supplies = 5000;
-    redArmy.food_supplies = 10000;
+    redArmy.ammo_supplies = 5000.0;
+    redArmy.combat_supplies = 5000.0;
+    redArmy.food_supplies = 10000.0;
 
     blueArmy.logistics_effectivity = 0.95;
     blueArmy.technology_level = 4.2;

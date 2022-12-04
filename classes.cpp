@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <vector>
+#include <simlib.h>
 #include "classes.h"
 
 /*
@@ -88,6 +90,40 @@ void Battalion::call_backup(Army army){
 
 }
 
+void Battalion::update_battalion(double casualties, int munition_lost, int supplies_lost, double survival_modifier, int hour){
+    //int number_of_companies = battalion.get_number_of_companies();
+    
+    //std::vector<Company*> companies_vector;
+
+    for (auto c : this->companies){
+        //companies_vector.push_back(&c);
+        c->DMG_taken += casualties/(double)c->ret_current_healthy_size();
+        c->ammo -= munition_lost/(double)c->ret_current_healthy_size();
+        c->supplies -= supplies_lost/(double)c->ret_current_healthy_size();
+        
+        while (c->DMG_taken >= 1.0){
+            auto x = Random();
+            auto u = c->ret_healthy_unit();
+
+            if (x < 0.18*survival_modifier){
+                u->state == Unit::dead;
+                c->units_died++;
+            }
+            else{
+                u->state == Unit::wounded;
+                u->time_of_last_injury = hour;
+                c->units_wounded++;
+            }
+            c->DMG_taken -= 1.0;
+        }
+    }
+    
+}
+
+int Battalion::get_number_of_companies(){
+    return this->companies.size();
+}
+
 int Battalion::get_base_attack_power(){
     int retval;
     for (auto c : companies ){
@@ -120,6 +156,25 @@ void Company::remove_dead_units(){
         else
             u++;
     }
+}
+Unit* Company::ret_healthy_unit(){
+    for (auto u : this->units){
+        if (u.state == Unit::healthy){
+            return &u;
+        }
+        else{
+            return nullptr;
+        }
+    }
+}
+
+int Company::ret_current_healthy_size(){
+    int retval = 0;
+    for (auto u : units) {
+        if (u.state == Unit::healthy)
+            retval++; 
+    }
+    return retval;
 }
 
 int Company::ret_current_wounded_size(){

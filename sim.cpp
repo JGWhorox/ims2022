@@ -3,6 +3,7 @@
 #include <simlib.h>
 
 #include "sim.h"
+#include "classes.h"
 #include "mapgenerator.h"
 
 int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
@@ -45,9 +46,16 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             for ( auto b : blueArmy.battalions ){
                 //TANK MUSI ZRAT VIAC
                 for ( auto c : b.companies ){
-                    int number_of_units = c->units.size();
-                    int number_of_wounded = c->ret_current_wounded_size();
+                    int number_of_units;
+                    int number_of_wounded;
 
+                    if (c->type == Company::tank) {
+                        number_of_units = c->units.size()*4;
+                        number_of_wounded = c->ret_current_wounded_size()*4;
+                    } else{
+                        number_of_units = c->units.size();
+                        number_of_wounded = c->ret_current_wounded_size();
+                    }
                     c->food = c->food - ((number_of_units - number_of_wounded)+number_of_wounded*2);
                 }
             }
@@ -68,15 +76,44 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             if(b->in_fight){
                 //engagement logic
                 if (b->armyID = redArmy.armyID){
-                    double blue_DMGmodifier  = b->enemy_Battalion->attack_power/(double)b->attack_power;
-                    double red_DMGmodifier = (double)b->attack_power/b->enemy_Battalion->attack_power;
                     
                     //##### config section #####
                     double crit_f = 0.005;
                     double miss = 0.03;
                     double nothing_happens = 0.985;
+                    double prof_threshhold = 0.5;
                     //##### config section #####
                     
+                    double blue_DMGmodifier  = b->enemy_Battalion->attack_power/(double)b->attack_power;
+                    double red_DMGmodifier = (double)b->attack_power/b->enemy_Battalion->attack_power;
+
+                    
+                    /*
+                    calculates survival modifier based on tech level normalised to modern age 
+                     + level of army professionalism which represents combined army command & individual soldiers experience and military education
+                    is then reduced by a threshold
+                    then it negates it and adds to 1 which, the result of which is then used to modify is an soldier survives being hit
+                    ### example ### 
+                    modern army (e.g. Germany):
+                    TL = 4,2; P = 0,8; 
+                    ((4,2/4-1)+(0.8-0,5)) * -1 +1=
+                    0.05+0.3 *-1 +1= 0.65
+
+                    older army (e.g. Kazachstan or other CSAT-like countries with partly conscription based recruitment):
+                    TL = 3,7; P = 0,45;
+                    (-0.075 + -0.05) *-1 +1 = 1.125
+
+                    so a modern day army with higher level of professionalism can expect its soldiers to die in combat 
+                    (baseline_chance_to_die_from_being_hit)*0.65
+                    but an older army with less technologically developed army and much less professionalism
+                    can expect higher soldier deaths
+                    
+
+                    possible rework needed
+                    */
+                    double blue_survival_modifier = ((((blueArmy.technology_level/(double)4)-1)+(blueArmy.professionalism-prof_threshhold))*(-1))+1;
+                    double red_survival_modifier = ((((redArmy.technology_level/(double)4)-1)+(redArmy.professionalism-prof_threshhold))*(-1))+1;
+
                     int blue_munitions_lost = 0;
                     int blue_supplies_lost = 0;
                     int blue_true_shots_fired = 0;
@@ -121,14 +158,18 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                         }
                     }
                     
-                    int blue_casualties = 0;
-                    int red_casualties = 0;
+                    double blue_casualties = 0;
+                    double red_casualties = 0;
 
-                    blue_casualties = red_true_shots_fired*red_DMGmodifier/**(1,5-enemycover)*/;
-                    red_casualties = blue_true_shots_fired*blue_DMGmodifier;
+                    auto blue_cover = scenario.get_cell(b->enemy_Battalion->position).cover;
+                    auto red_cover = scenario.get_cell(b->position).cover;
+
+                    blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.5-blue_cover);
+                    red_casualties = (double)blue_true_shots_fired*blue_DMGmodifier*(1.5-red_cover);
 
                     //treba dorobiť random zapisovanie dmg do battalionu po engagemente, dostať sem enemy/friendly cover
-
+                    b->enemy_Battalion->update_battalion(blue_casualties,blue_munitions_lost,blue_supplies_lost,blue_survival_modifier,hour);
+                    b->update_battalion(red_casualties,red_munitions_lost,red_supplies_lost,red_survival_modifier,hour);
 
 
 
