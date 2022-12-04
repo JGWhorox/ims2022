@@ -113,7 +113,10 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     */
                     double blue_survival_modifier = ((((blueArmy.technology_level/(double)4)-1)+(blueArmy.professionalism-prof_threshhold))*(-1))+1;
                     double red_survival_modifier = ((((redArmy.technology_level/(double)4)-1)+(redArmy.professionalism-prof_threshhold))*(-1))+1;
-
+                    
+                    //should be pretty self explanatory, other than the true shots mechanic - it's quite simple: the fact, that 
+                    //a soldier landed a shot on enemy doesnt mean, it has gone through the soldiers armour/dmged a tank -> its a hit, 
+                    //but it doens't have to be an automatic casualty 
                     int blue_munitions_lost = 0;
                     int blue_supplies_lost = 0;
                     int blue_true_shots_fired = 0;
@@ -122,6 +125,9 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     int red_supplies_lost = 0;                   
                     int red_true_shots_fired = 0;
 
+                    //calculates the chance of each soldier in battallion firing upon enemy in 1 hour + is able to simulate randomness like shooting and missing or 
+                    //f*ckups like jamming of the gun or anything that could be represented by loss of a combat supply (dmged tank/other weapons, missfire, etc)
+                    //values configurable in config section above
                     for (int i = 0; i < b->enemy_Battalion->get_number_of_healthy_units(); i++){                   
                         auto x = Random()/**b->enemy_Battalion->Professionalism*/;
                         
@@ -161,17 +167,16 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     double blue_casualties = 0;
                     double red_casualties = 0;
 
+                    //get the average cover of each battalion
                     auto blue_cover = scenario.get_cell(b->enemy_Battalion->position).cover;
                     auto red_cover = scenario.get_cell(b->position).cover;
-
+                    //calculate number of casualties or simply "DMG dealt" 
                     blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.5-blue_cover);
                     red_casualties = (double)blue_true_shots_fired*blue_DMGmodifier*(1.5-red_cover);
 
-                    //treba dorobiť random zapisovanie dmg do battalionu po engagemente, dostať sem enemy/friendly cover
+                    //updates battalions after each hours conflict
                     b->enemy_Battalion->update_battalion(blue_casualties,blue_munitions_lost,blue_supplies_lost,blue_survival_modifier,hour);
                     b->update_battalion(red_casualties,red_munitions_lost,red_supplies_lost,red_survival_modifier,hour);
-
-
 
                 }
             }
