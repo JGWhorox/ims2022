@@ -63,6 +63,7 @@ class Battalion {
   bool removeCompany(Company com);
   
   void call_backup(Army army);
+  void assign_backup(Battalion backup_bat);
   void update_battalion(double casualties, int munition_lost, int supplies_lost, double modifier, int hour);
   
   int countHistoricalDead();
