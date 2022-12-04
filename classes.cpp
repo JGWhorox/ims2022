@@ -90,6 +90,13 @@ void Battalion::call_backup(Army army){
 
 }
 
+void Battalion::assign_backup(Battalion backup_bat){
+    for (auto comp : backup_bat.companies)
+    {
+        companies.push_back(comp);
+    }
+}
+
 void Battalion::update_battalion(double casualties, int munition_lost, int supplies_lost, double survival_modifier, int hour){
     //int number_of_companies = battalion.get_number_of_companies();
     
