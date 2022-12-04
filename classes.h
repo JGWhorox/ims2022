@@ -75,17 +75,19 @@ class Battalion {
 
 class Army {
   public:
-  std::list<Battalion> battalions;
-  
-  double logistics_effectivity = 1; //0 - 1 
-  double professionalism; // 0 - 1
-  double technology_level; // 1 - 4.99 - 1 = first muskets, 2 = napoleonic wars, 3 = WW2, 4 = around 90's - 00's
+    std::list<Battalion> battalions;
 
-  double ammo_supplies;
-  double food_supplies;
-  double combat_supplies;
-  //int antitank_supplies;
-  int armyID;
+    double logistics_effectivity = 1; //0 - 1 
+    double professionalism; // 0 - 1
+    double technology_level; // 1 - 4.99 - 1 = first muskets, 2 = napoleonic wars, 3 = WW2, 4 = around 90's - 00's
+
+    double ammo_supplies;
+    double food_supplies;
+    double combat_supplies;
+    //int antitank_supplies;
+    int armyID;
+
+    void report_stats(int hour, bool debug);
 
 };
 
