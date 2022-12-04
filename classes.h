@@ -3,6 +3,7 @@
 #ifndef CLASSES_H
 #define CLASSES_H
 
+class Army;
 
 // parent classes
 class Unit {
@@ -49,7 +50,7 @@ class Battalion {
   std::pair<int, int> position;
   bool in_fight = false;
   //bool preparing_for_attack = false;
-  bool moving = false;
+  double moving = 0.0;
   bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 
   int armyID;
@@ -59,10 +60,10 @@ class Battalion {
   int attack_power;
   
   
-  bool addCompany(Company com);
-  bool removeCompany(Company com);
+  bool addCompany(Company &com);
+  bool removeCompany(Company &com);
   
-  void call_backup(Army army);
+  void call_backup(Army &army);
   bool update_battalion(double casualties, int munition_lost, int supplies_lost, double modifier, int hour);
   void assign_backup(Battalion backup_bat);
   
@@ -87,7 +88,8 @@ class Army {
     //int antitank_supplies;
     int armyID;
 
-    void report_stats(int hour, bool debug);
+    void report_stats(int hour, bool debug, bool show_army_stats);
+    Battalion* ret_battalion_on_position(std::pair<int,int> position);
 
 };
 

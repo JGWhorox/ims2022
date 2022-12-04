@@ -19,15 +19,15 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
     for (int hour=0; hour <= timeframe; hour++){
 
         //get all battalions into 1 poitner list so I can randomize their engagements
-        std::vector<Battalion*> battalions; 
-        for ( auto b : blueArmy.battalions ){
-            battalions.push_back(&b);
+        std::vector<Battalion*> battalions_vector; 
+        for ( auto &b : blueArmy.battalions ){
+            battalions_vector.push_back(&b);
         }
-        for ( auto b : redArmy.battalions ){
-            battalions.push_back(&b);
+        for ( auto &b : redArmy.battalions ){
+            battalions_vector.push_back(&b);
         }
         //calculate attack power in the beginning of the turn
-        for(auto b : battalions){
+        for(auto b : battalions_vector){
             b->attack_power = b->get_base_attack_power();
             //red army calculation
             if (b->armyID == redArmy.armyID){
@@ -62,29 +62,36 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
 
         //check okolia
 
-        while(!battalions.empty()){
+        while(!battalions_vector.empty()){
 
             //choses one battalion at random
-            int idx = std::rand()% battalions.size();
-            Battalion* b = battalions.at(idx);
+            int idx = std::rand()% battalions_vector.size();
+            Battalion* b = battalions_vector.at(idx);
 
             //removes the battalion from iterable list
-            battalions.erase(battalions.begin()+idx);
+            battalions_vector.erase(battalions_vector.begin()+idx);
 
             if (b->is_backup){
                 b->backup_timeout--;
                 if (b->backup_timeout != 0) continue;
-
                 for (auto bat : blueArmy.battalions) {
                     if (bat.position == b->position && !bat.is_backup) {
                         bat.assign_backup(*b);
-                        blueArmy.battalions.remove(*b);
+                        //blueArmy.battalions.remove(b);
+                        for (auto iter = blueArmy.battalions.begin(); iter != blueArmy.battalions.end(); iter++){
+                            Battalion &b2 = *iter;
+                            if (&b2 == b){
+                                blueArmy.battalions.erase(iter);
+                                break;
+                            }
+                        }
                         //if you need to move the battalion add here
                         break;
                     }
                 }
                 continue;
             }
+
 
             if(b->in_fight){
                 //engagement logic
@@ -212,54 +219,73 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                 }
                 //logika pohybu cervenych
                 if (b->armyID == redArmy.armyID){
-                    
-                    int posx = b->position.first;
-                    int posy = b->position.second;
-                    double lowest_cover = 1;
-                    double highest_cover = -1;
-                    std::pair<int, int> lowest_cover_pos;
-                    std::pair<int, int> highest_cover_pos;
-                    for (size_t i = -1; i <= 1; i++) {
-                        if (posy+i < 0 || posy+i > 25) continue; //don't run out of bounds
-                        Cell current_cell = scenario.get_cell(std::make_pair(posx-1, posy+i));
+                    if (b->moving){
+                        b->moving -= 1.0;
+                        if (b->moving < 0.0){
+                            b->moving = 0.0;
+                        }
+                    }else{
+                        int posx = b->position.first;
+                        int posy = b->position.second;
+                        double lowest_cover = 1;
+                        double highest_cover = -1;
+                        std::pair<int, int> lowest_cover_pos;
+                        std::pair<int, int> highest_cover_pos;
+                        
+                        //looks on 3 cells from its position (to the left)
+                        //
+                        for (size_t i = -1; i <= 1; i++) {
+                            if (posy+i < 0 || posy+i > scenario.max_y) continue; //don't run out of bounds
+                            Cell current_cell = scenario.get_cell(std::make_pair(posx-1, posy+i));
 
-                        if (current_cell.occupation == Cell::red) continue;
-                        if (current_cell.occupation == Cell::blue) continue; //TODO attack enemy
+                            if (current_cell.occupation == Cell::red) continue;
+                            //if modry =utok
+                            if (current_cell.occupation == Cell::blue) {
+                                auto blue_battalion = blueArmy.ret_battalion_on_position(std::make_pair(current_cell.posx,current_cell.posy));
+                                    
+                            } //TODO attack enemy
 
-                        if (current_cell.cover < lowest_cover) {
-                            lowest_cover = current_cell.cover;
-                            lowest_cover_pos = std::make_pair(posx-1, posy+i);
+                            if (current_cell.cover < lowest_cover) {
+                                lowest_cover = current_cell.cover;
+                                lowest_cover_pos = std::make_pair(posx-1, posy+i);
+                            }
+
+                            if (current_cell.cover > highest_cover) {
+                                highest_cover = current_cell.cover;
+                                highest_cover_pos = std::make_pair(posx-1, posy+i);
+                            }
                         }
 
-                        if (current_cell.cover > highest_cover) {
-                            highest_cover = current_cell.cover;
-                            highest_cover_pos = std::make_pair(posx-1, posy+i);
+                        if (highest_cover == -1) continue; //all adjecent cells occupied by red
+                        //looks on 3 cells to the left 1 cell column over to see, if there are any enemies
+                        //if they are it choose to move to the highest possible cover
+                        //else it goes to the lowest cover 
+                        bool saw_blue = false;
+                        for (size_t i = -1; i <=1; i++) {
+                            if (posy+i < 0 || posy+i > scenario.max_y) continue; //don't run out of bounds
+                            Cell c = scenario.get_cell(std::make_pair(posx-2, posy+i));
+                            if (c.occupation == Cell::blue) {
+                                saw_blue = true;
+                                break;
+                            }
+                        }
+                        //set to which cell the bat is moving
+                        if (saw_blue) {
+                            scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
+                            scenario.set_occupation(highest_cover_pos, Cell::red);
+                            b->position = highest_cover_pos;
+                            auto cover = scenario.get_cell(highest_cover_pos).cover;
+                            b->moving = (double)2.25*(0.75+cover);
+                        } else {
+                            scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
+                            scenario.set_occupation(lowest_cover_pos, Cell::red);
+                            b->position = lowest_cover_pos;
+                            auto cover = scenario.get_cell(lowest_cover_pos).cover;
+                            b->moving = (double)2.25*(0.75+cover);
                         }
                     }
-
-                    if (highest_cover == -1) continue; //all adjecent cells occupied by red
-
-                    bool saw_blue = false;
-                    for (size_t i = -1; i <=1; i++) {
-                        if (posy+i < 0 || posy+i > scenario.max_y) continue; //don't run out of bounds
-                        Cell c = scenario.get_cell(std::make_pair(posx-2, posy+i));
-                        if (c.occupation == Cell::blue) {
-                            saw_blue = true;
-                            break;
-                        }
-                    }
-
-                    if (saw_blue) {
-                        scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
-                        scenario.set_occupation(highest_cover_pos, Cell::red);
-                        b->position = highest_cover_pos;
-                    } else {
-                        scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
-                        scenario.set_occupation(lowest_cover_pos, Cell::red);
-                        b->position = lowest_cover_pos;
-                    }
-                        }
-                    }
+                }
+            }
         }   
     }
     return 0;

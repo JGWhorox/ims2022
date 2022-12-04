@@ -38,7 +38,7 @@ Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, i
     return b;
 }
 
-void Battalion::call_backup(Army army){
+void Battalion::call_backup(Army &army){
     Battalion closest_bat;
     closest_bat.position.first = -1;
     for (auto bat: army.battalions){
@@ -170,14 +170,15 @@ Unit* Company::ret_healthy_unit(){
             return &u;
         }
         else{
-            return nullptr;
+           continue;
         }
     }
+    return nullptr;
 }
 
 int Company::ret_current_healthy_size(){
     int retval = 0;
-    for (auto u : units) {
+    for (auto &u : units) {
         if (u.state == Unit::healthy)
             retval++; 
     }
@@ -186,7 +187,7 @@ int Company::ret_current_healthy_size(){
 
 int Company::ret_current_wounded_size(){
     int retval = 0;
-    for (auto u : units) {
+    for (auto &u : units) {
         if (u.state == Unit::wounded)
             retval++; 
     }
@@ -208,7 +209,7 @@ Company::Company(int u, int a, int f, int s){
 void Company::heal_units(std::list<Unit> units){
     if (!supplies) return;
     
-    for (auto u : units){
+    for (auto &u : units){
         if (u.state == Unit::wounded){
             // TODO add randomness here
             u.state = Unit::healthy;
@@ -217,27 +218,39 @@ void Company::heal_units(std::list<Unit> units){
     }
 }
 
-void Army::report_stats(int hour, bool debug){
-    if (!((hour % 24 && debug) || hour % 168 || hour % 720)) return;
+Battalion* Army::ret_battalion_on_position(std::pair<int,int>position){
+    for ( auto &b : this->battalions){
+        if(b.position == position){
+            return &b;
+        }
+    }
+    return nullptr;
+}
+
+void Army::report_stats(int hour, bool debug, bool show_army_stats){
+    if (!(hour % 24 || hour % 168 || hour % 720 || debug)) return;
+    //else print data, if debug flag is set it prints the data every hour
     std::stringstream ss;
     int ibat = 0;
     int icomp = 0;
     int iunit = 0;
-    ss << "Army stats:" << std::endl;
-    ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << " ";
-    ss << "Professionalism: " << std::to_string(professionalism) << " ";
-    ss << "Technology level: "  << std::to_string(technology_level) << " ";
-    ss << "Anni supplies: " << std::to_string(ammo_supplies) << " ";
-    ss << "Food supplies: " << std::to_string(food_supplies) << " ";
-    ss << "Combat supplies: "<< std::to_string(combat_supplies) << " ";
-    ss << "Battalion stats:" << std::endl;
+    if (show_army_stats){
+        ss << "Army stats:" << std::endl;
+        ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << " ";
+        ss << "Professionalism: " << std::to_string(professionalism) << " ";
+        ss << "Technology level: "  << std::to_string(technology_level) << " ";
+        ss << "Anni supplies: " << std::to_string(ammo_supplies) << " ";
+        ss << "Food supplies: " << std::to_string(food_supplies) << " ";
+        ss << "Combat supplies: "<< std::to_string(combat_supplies) << " ";
+        ss << "Battalion stats:" << std::endl;
+    }
     for (auto bat: battalions){
         ss << "Battalion " << std::to_string(++ibat) << " ";
         ss << "Position x: " << std::to_string(bat.position.first) << " ";
         ss << "Position y: " << std::to_string(bat.position.second) << " ";
         ss << "State: ";
         if (bat.in_fight) ss << "in_fight ";
-        if (bat.moving) ss << "moving ";
+        if (bat.moving) ss << "moving " << std::to_string(bat.moving) << " remainning";
         if (bat.is_backup) ss << "is_backup_with_timeout " << std::to_string(bat.backup_timeout) << " ";
         ss << "ACC: " << std::to_string(bat.action_cooldown_counter);
         ss << "Attack power: " << bat.attack_power;
