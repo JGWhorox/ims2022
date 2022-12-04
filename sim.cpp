@@ -71,6 +71,20 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             //removes the battalion from iterable list
             battalions.erase(battalions.begin()+idx);
 
+            if (b->is_backup){
+                b->backup_timeout--;
+                if (b->backup_timeout != 0) continue;
+
+                for (auto bat : blueArmy.battalions) {
+                    if (bat.position == b->position && !bat.is_backup) {
+                        bat.assign_backup(*b);
+                        blueArmy.battalions.remove(*b);
+                        //if you need to move the battalion add here
+                        break;
+                    }
+                }
+                continue;
+            }
 
             if(b->in_fight){
                 //engagement logic
