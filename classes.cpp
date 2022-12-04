@@ -1,5 +1,7 @@
 #include <cstdlib>
 #include <vector>
+#include <sstream>
+#include <iostream>
 #include <simlib.h>
 #include "classes.h"
 
@@ -215,4 +217,74 @@ void Company::heal_units(std::list<Unit> units){
             supplies--;
         }
     }
+}
+
+void Army::report_stats(int hour, bool debug){
+    if (!((hour % 24 && debug) || hour % 168 || hour % 720)) return;
+    std::stringstream ss;
+    int ibat = 0;
+    int icomp = 0;
+    int iunit = 0;
+    ss << "Army stats:" << std::endl;
+    ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << " ";
+    ss << "Professionalism: " << std::to_string(professionalism) << " ";
+    ss << "Technology level: "  << std::to_string(technology_level) << " ";
+    ss << "Anni supplies: " << std::to_string(ammo_supplies) << " ";
+    ss << "Food supplies: " << std::to_string(food_supplies) << " ";
+    ss << "Combat supplies: "<< std::to_string(combat_supplies) << " ";
+    ss << "Battalion stats:" << std::endl;
+    for (auto bat: battalions){
+        ss << "Battalion " << std::to_string(++ibat) << " ";
+        ss << "Position x: " << std::to_string(bat.position.first) << " ";
+        ss << "Position y: " << std::to_string(bat.position.second) << " ";
+        ss << "State: ";
+        if (bat.in_fight) ss << "in_fight ";
+        if (bat.moving) ss << "moving ";
+        if (bat.is_backup) ss << "is_backup_with_timeout " << std::to_string(bat.backup_timeout) << " ";
+        ss << "ACC: " << std::to_string(bat.action_cooldown_counter);
+        ss << "Attack power: " << bat.attack_power;
+        ss << "Companies: " << std::endl;
+        for (auto comp : bat.companies){
+            ss << "Company " << std::to_string(++icomp) << " ";
+            ss << "Type: ";
+            switch (comp->type){
+            case Company::infantry:
+                ss << "infantry ";
+                break;
+            case Company::combat_support:
+                ss << "combat_support ";
+                break;
+            case Company::tank:
+                ss << "tank ";
+                break;
+            }
+            ss << "DMG taken: " << std::to_string(comp->DMG_taken) << " ";
+            ss << "Ammo:" << std::to_string(comp->ammo) << " ";
+            ss << "Food" << std::to_string(comp->food) << " ";
+            ss << "Supplies" << std::to_string(comp->supplies) << " ";
+            ss << "Units died" << std::to_string(comp->units_died) << " ";
+            ss << "Units wounded" << std::to_string(comp->units_wounded) << " ";
+            ss << "Units recovered" << std::to_string(comp->units_recovered) << " ";
+            ss << "Units reinforced other bat" << std::to_string(comp->units_reinforced_other_battalion) << " ";
+            ss << "Units: " << std::endl;
+            for (auto unit : comp->units){
+                ss << "Unit " << std::to_string(++iunit) << " ";
+                ss << "State: ";
+                switch (unit.state){
+                    case Unit::healthy:
+                        ss << "healthy ";
+                        break;
+                    case Unit::wounded:
+                        ss << "wounded ";
+                        break;
+                    case Unit::dead:
+                        ss << "dead ";
+                        break;
+                }
+                ss << "Last injury: " << std::to_string(unit.time_of_last_injury) << " ";
+                ss << "Medical procedures: " << std::to_string(unit.number_of_medical_procedures) << std::endl;
+            }
+        }
+    }
+    std::cout << ss.str() << std::endl;
 }
