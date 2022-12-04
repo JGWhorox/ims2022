@@ -127,7 +127,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     blue_casualties = red_true_shots_fired*red_DMGmodifier/**(1,5-enemycover)*/;
                     red_casualties = blue_true_shots_fired*blue_DMGmodifier;
 
-                    
+                    //treba dorobiť random zapisovanie dmg do battalionu po engagemente, dostať sem enemy/friendly cover
 
 
 
