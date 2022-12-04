@@ -27,6 +27,7 @@ class Company {
     int units_died = 0;
     int units_wounded = 0;
     int units_recovered = 0;
+    int units_reinforced_other_battalion = 0;
 
     Company(int units, int ammo, int food, int supplies);
     
