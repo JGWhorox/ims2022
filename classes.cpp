@@ -47,6 +47,8 @@ void Battalion::call_backup(Army army){
         if (bat.position.first < closest_bat.position.first) closest_bat = bat;
     }
     
+    if (closest_bat.position.first = -1) return;
+
     int Inf;
     int Inf_size; 
     int Cs;
