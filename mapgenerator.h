@@ -24,6 +24,7 @@ class MyMap{
         std::map<std::pair<int, int>, Cell> cells;
         
         int max_x;
+        int max_y;
         MyMap();
         MyMap(int x, int y);
         void GenerateMyMap(int x_size, int y_size);

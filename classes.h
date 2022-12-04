@@ -48,7 +48,7 @@ class Battalion {
   std::list<Company*> companies; 
   std::pair<int, int> position;
   bool in_fight = false;
-  bool preparing_for_attack = false;
+  //bool preparing_for_attack = false;
   bool moving = false;
   bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 

@@ -207,57 +207,59 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                 }
             }
             else{
-                if (b->armyID = blueArmy.armyID){
+                if (b->armyID == blueArmy.armyID){
                     //blue army will try to reinforce position, looks out for the enemy
                 }
-            }
+                //logika pohybu cervenych
+                if (b->armyID == redArmy.armyID){
+                    
+                    int posx = b->position.first;
+                    int posy = b->position.second;
+                    double lowest_cover = 1;
+                    double highest_cover = -1;
+                    std::pair<int, int> lowest_cover_pos;
+                    std::pair<int, int> highest_cover_pos;
+                    for (size_t i = -1; i <= 1; i++) {
+                        if (posy+i < 0 || posy+i > 25) continue; //don't run out of bounds
+                        Cell current_cell = scenario.get_cell(std::make_pair(posx-1, posy+i));
 
-            //logika pohybu 
-            int posx = b->position.first;
-            int posy = b->position.second;
-            double lowest_cover = 1;
-            double highest_cover = -1;
-            std::pair<int, int> lowest_cover_pos;
-            std::pair<int, int> highest_cover_pos;
-            for (size_t i = -1; i <= 1; i++) {
-                if (posy+i < 0 || posy+i > 25) continue; //don't run out of bounds
-                Cell current_cell = scenario.get_cell(std::make_pair(posx-1, posy+i));
+                        if (current_cell.occupation == Cell::red) continue;
+                        if (current_cell.occupation == Cell::blue) continue; //TODO attack enemy
 
-                if (current_cell.occupation == Cell::red) continue;
-                if (current_cell.occupation == Cell::blue) continue; //TODO attack enemy
+                        if (current_cell.cover < lowest_cover) {
+                            lowest_cover = current_cell.cover;
+                            lowest_cover_pos = std::make_pair(posx-1, posy+i);
+                        }
 
-                if (current_cell.cover < lowest_cover) {
-                    lowest_cover = current_cell.cover;
-                    lowest_cover_pos = std::make_pair(posx-1, posy+i);
-                }
+                        if (current_cell.cover > highest_cover) {
+                            highest_cover = current_cell.cover;
+                            highest_cover_pos = std::make_pair(posx-1, posy+i);
+                        }
+                    }
 
-                if (current_cell.cover > highest_cover) {
-                    highest_cover = current_cell.cover;
-                    highest_cover_pos = std::make_pair(posx-1, posy+i);
-                }
-            }
+                    if (highest_cover == -1) continue; //all adjecent cells occupied by red
 
-            if (highest_cover == -1) continue; //all adjecent cells occupied by red
+                    bool saw_blue = false;
+                    for (size_t i = -1; i <=1; i++) {
+                        if (posy+i < 0 || posy+i > scenario.max_y) continue; //don't run out of bounds
+                        Cell c = scenario.get_cell(std::make_pair(posx-2, posy+i));
+                        if (c.occupation == Cell::blue) {
+                            saw_blue = true;
+                            break;
+                        }
+                    }
 
-            bool saw_blue = false;
-            for (size_t i = -1; i <=1; i++) {
-                if (posy+i < 0 || posy+i > 25) continue; //don't run out of bounds
-                Cell c = scenario.get_cell(std::make_pair(posx-2, posy+i));
-                if (c.occupation == Cell::blue) {
-                    saw_blue = true;
-                    break;
-                }
-            }
-
-            if (saw_blue) {
-                scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
-                scenario.set_occupation(highest_cover_pos, Cell::red);
-                b->position = highest_cover_pos;
-            } else {
-                scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
-                scenario.set_occupation(lowest_cover_pos, Cell::red);
-                b->position = lowest_cover_pos;
-            }
+                    if (saw_blue) {
+                        scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
+                        scenario.set_occupation(highest_cover_pos, Cell::red);
+                        b->position = highest_cover_pos;
+                    } else {
+                        scenario.set_occupation(std::make_pair(posx, posy), Cell::neutral);
+                        scenario.set_occupation(lowest_cover_pos, Cell::red);
+                        b->position = lowest_cover_pos;
+                    }
+                        }
+                    }
         }   
     }
     return 0;
