@@ -1,5 +1,6 @@
 #include <vector>
 #include <random>
+#include <simlib.h>
 
 #include "sim.h"
 #include "mapgenerator.h"
@@ -28,6 +29,15 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
         //calculate attack power in the beginning of the turn
         for(auto b : battalions){
             b->attack_power = b->get_base_attack_power();
+            //red army calculation
+            if (b->armyID == redArmy.armyID){
+                b->attack_power *= redArmy.technology_level*redArmy.professionalism;
+            }
+            //blue army calculation
+            else{ 
+                b->attack_power *= blueArmy.technology_level*blueArmy.professionalism;
+            }
+            
         }
 
         //eating
@@ -58,7 +68,70 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             if(b->in_fight){
                 //engagement logic
                 if (b->armyID = redArmy.armyID){
-                    int enemyAP = b->enemy_Battalion->attack_power;
+                    double blue_DMGmodifier  = b->enemy_Battalion->attack_power/(double)b->attack_power;
+                    double red_DMGmodifier = (double)b->attack_power/b->enemy_Battalion->attack_power;
+                    
+                    //##### config section #####
+                    double crit_f = 0.005;
+                    double miss = 0.03;
+                    double nothing_happens = 0.985;
+                    //##### config section #####
+                    
+                    int blue_munitions_lost = 0;
+                    int blue_supplies_lost = 0;
+                    int blue_true_shots_fired = 0;
+                    
+                    int red_munitions_lost = 0;
+                    int red_supplies_lost = 0;                   
+                    int red_true_shots_fired = 0;
+
+                    for (int i = 0; i < b->enemy_Battalion->get_number_of_healthy_units(); i++){                   
+                        auto x = Random()/**b->enemy_Battalion->Professionalism*/;
+                        
+                        if (x < crit_f){ //critical failure - failed to hit, lost 1 munition and 1 supply to repair equipment
+                            blue_munitions_lost += 1;
+                            blue_supplies_lost += 1;
+                        }
+                        else if (x < miss){ // big failure - failed to hit, and lost munition
+                            blue_munitions_lost += 1;
+                        }
+                        else if (x < nothing_happens){ 
+                            // did not encounter enemy - didn't fire
+                        }
+                        else{ // hit target
+                            blue_munitions_lost += 1;
+                            blue_true_shots_fired += 1;
+                        }
+                    }
+                    for (int i = 0; i < b->get_number_of_healthy_units(); i++){                   
+                        auto x = Random()/**b->enemy_Battalion->Professionalism*/;
+                        if (x < 0.02){ //critical failure - failed to hit, lost 1 munition and 1 supply to repair equipment
+                            red_munitions_lost += 1;
+                            red_supplies_lost += 1;
+                        }
+                        else if (x < 0.18){ // big failure - failed to hit, and lost munition
+                            red_munitions_lost += 1;
+                        }
+                        else if (x < 0.985){ // did not encounter enemy
+                            
+                        }
+                        else{ // hit target
+                            red_munitions_lost += 1;
+                            red_true_shots_fired += 1;
+                        }
+                    }
+                    
+                    int blue_casualties = 0;
+                    int red_casualties = 0;
+
+                    blue_casualties = red_true_shots_fired*red_DMGmodifier/**(1,5-enemycover)*/;
+                    red_casualties = blue_true_shots_fired*blue_DMGmodifier;
+
+                    
+
+
+
+
                 }
             }
             else{

@@ -55,7 +55,12 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
     redArmy.food_supplies = 10000;
 
     blueArmy.logistics_effectivity = 0.95;
+    blueArmy.technology_level = 4.2;
+    blueArmy.professionalism = 0.95;
+
     redArmy.logistics_effectivity = 0.80;
+    redArmy.technology_level = 4.2;
+    redArmy.professionalism = 0.95;
 
     //config of army sizes and
     //config initial position armies on the mapmake_pair(1,1)

@@ -57,13 +57,18 @@ class Battalion {
   bool removeCompany(Company com);
   void call_backup(Army army);
   int get_base_attack_power();
+  int get_number_of_healthy_units();
 
 };
 
 class Army {
   public:
   std::list<Battalion> battalions;
-  double logistics_effectivity = 1;
+  
+  double logistics_effectivity = 1; //0 - 1 
+  double professionalism; // 0 - 1
+  double technology_level; // 1 - 4.99 - 1 = first muskets, 2 = napoleonic wars, 3 = WW2, 4 = around 90's - 00's
+
   int ammo_supplies;
   int food_supplies;
   int combat_supplies;

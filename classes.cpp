@@ -46,9 +46,15 @@ int Battalion::get_base_attack_power(){
     }
     return retval;
 }
+
+int Battalion::get_number_of_healthy_units(){
+    int retval;
+    for (auto c : companies ){
+            retval += c->units.size();
+    }
+    return retval;
+}
 //debug
-
-
 
 void Company::remove_dead_units(){
     for (auto u = units.begin(); u != units.end() ; ){
