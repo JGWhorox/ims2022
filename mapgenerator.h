@@ -28,7 +28,7 @@ class MyMap{
         MyMap();
         MyMap(int x, int y);
         void GenerateMyMap(int x_size, int y_size);
-        Cell get_cell(std::pair<int, int> coords);
+        Cell& get_cell(std::pair<int, int> coords);
         void set_occupation(std::pair<int, int> coords, Cell::Occupations occup);
         void set_fortification(std::pair<int, int> coords);
         void set_blue_line(std::list<std::pair<int, int>> blue_line);

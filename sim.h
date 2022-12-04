@@ -4,4 +4,4 @@
 #include "mapgenerator.h"
 
 /*blueArmy,redArmy,map,timeframe*/
-int executeSim(Army blueArmy, Army redArmy, MyMap scenario, int timeframe);
+int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe);

@@ -17,39 +17,17 @@
 #include "mapgenerator.h"
 #include "classes.h"
 #include "scenario_config.h"
+#include "sim.h"
 
 int main(int argc, char** argv){
     //std::cout << "Welcome to your week's purgatory" << std::endl;
-    
-    Arguments args;
-    
-    std::string input;
-    for (int i = 1; i < argc; i++){
-        input += argv[i];
-        if(i+1 < argc){
-            input += " ";
-        }
-    }
-    std::cout << input << std::endl;
-    if(!parseArgs(args, input)){
-        //std::cerr << "could not parse arguments, see help for more info" << std::endl;
-        return -1;
-    }
-    
     Army blueArmy;
     Army redArmy;
     MyMap map;
 
     configureScenario(blueArmy,redArmy,map);
 
-
-    
-
-    
-    //executeSim(blueArmy, redArmy, map, 720/*1 month in hours*/);
-
-
-
+    int retval = executeSim(blueArmy, redArmy, map, 30/*720 is 1 month in hours*/);
     
     return 0;
 }

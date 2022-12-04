@@ -54,8 +54,8 @@ class Battalion {
   bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 
   int armyID;
-  bool is_backup;
-  int backup_timeout;
+  bool is_backup = false;
+  int backup_timeout = 0;
   Battalion* enemy_Battalion;
   int attack_power;
   

@@ -27,7 +27,7 @@ void MyMap::GenerateMyMap(int x_size, int y_size){
     }
 }
 
-Cell MyMap::get_cell(std::pair<int, int> coords){
+Cell& MyMap::get_cell(std::pair<int, int> coords){
     return cells.find(coords)->second;
 }
 

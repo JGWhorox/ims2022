@@ -127,6 +127,13 @@ bool Battalion::update_battalion(double casualties, int munition_lost, int suppl
     
 }
 
+void Battalion::assign_backup(Battalion backup_bat){
+    for (auto comp : backup_bat.companies)
+    {
+        companies.push_back(comp);
+    }
+}
+
 int Battalion::get_number_of_companies(){
     return this->companies.size();
 }
@@ -232,31 +239,32 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats){
     //else print data, if debug flag is set it prints the data every hour
     std::stringstream ss;
     int ibat = 0;
-    int icomp = 0;
-    int iunit = 0;
+    ss << "########## ARMY ID:" << std::to_string(armyID) << " ##########" << std::endl;
+    ss << "######### hurr hour:" << std::to_string(hour) << " #########" << std::endl;
     if (show_army_stats){
         ss << "Army stats:" << std::endl;
-        ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << " ";
-        ss << "Professionalism: " << std::to_string(professionalism) << " ";
-        ss << "Technology level: "  << std::to_string(technology_level) << " ";
-        ss << "Anni supplies: " << std::to_string(ammo_supplies) << " ";
-        ss << "Food supplies: " << std::to_string(food_supplies) << " ";
-        ss << "Combat supplies: "<< std::to_string(combat_supplies) << " ";
+        ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << "\t";
+        ss << "Professionalism: " << std::to_string(professionalism) << "\t";
+        ss << "Technology level: "  << std::to_string(technology_level) << "\t";
+        ss << "Anni supplies: " << std::to_string(ammo_supplies) << "\t";
+        ss << "Food supplies: " << std::to_string(food_supplies) << "\t";
+        ss << "Combat supplies: "<< std::to_string(combat_supplies) << "\t";
         ss << "Battalion stats:" << std::endl;
     }
     for (auto bat: battalions){
-        ss << "Battalion " << std::to_string(++ibat) << " ";
-        ss << "Position x: " << std::to_string(bat.position.first) << " ";
-        ss << "Position y: " << std::to_string(bat.position.second) << " ";
+        ss << "Battalion " << std::to_string(++ibat) << "\t";
+        ss << "Position x: " << std::to_string(bat.position.first) << "\t";
+        ss << "Position y: " << std::to_string(bat.position.second) << "\t";
         ss << "State: ";
         if (bat.in_fight) ss << "in_fight ";
         if (bat.moving) ss << "moving " << std::to_string(bat.moving) << " remainning";
-        if (bat.is_backup) ss << "is_backup_with_timeout " << std::to_string(bat.backup_timeout) << " ";
-        ss << "ACC: " << std::to_string(bat.action_cooldown_counter);
-        ss << "Attack power: " << bat.attack_power;
-        ss << "Companies: " << std::endl;
+        if (bat.is_backup) ss << "is_backup_with_timeout " << std::to_string(bat.backup_timeout) << "\t";
+        ss << "ACC: " << std::to_string(bat.action_cooldown_counter)<< "\t";
+        ss << "Attack power: " << bat.attack_power << "\t";
+        ss << "Companies: " << std::to_string(bat.get_number_of_companies()) << std::endl;
+        int icomp = 0;
         for (auto comp : bat.companies){
-            ss << "Company " << std::to_string(++icomp) << " ";
+            ss << "Company " << std::to_string(++icomp) << "\t";
             ss << "Type: ";
             switch (comp->type){
             case Company::infantry:
@@ -269,17 +277,18 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats){
                 ss << "tank ";
                 break;
             }
-            ss << "DMG taken: " << std::to_string(comp->DMG_taken) << " ";
-            ss << "Ammo:" << std::to_string(comp->ammo) << " ";
-            ss << "Food" << std::to_string(comp->food) << " ";
-            ss << "Supplies" << std::to_string(comp->supplies) << " ";
-            ss << "Units died" << std::to_string(comp->units_died) << " ";
-            ss << "Units wounded" << std::to_string(comp->units_wounded) << " ";
-            ss << "Units recovered" << std::to_string(comp->units_recovered) << " ";
-            ss << "Units reinforced other bat" << std::to_string(comp->units_reinforced_other_battalion) << " ";
+            ss << "DMG taken: " << std::to_string(comp->DMG_taken) << "\t";
+            ss << "Ammo: " << std::to_string(comp->ammo) << "\t";
+            ss << "Food: " << std::to_string(comp->food) << "\t";
+            ss << "Supplies: " << std::to_string(comp->supplies) << "\t";
+            ss << "Units died: " << std::to_string(comp->units_died) << "\t";
+            ss << "Units wounded: " << std::to_string(comp->units_wounded) << "\t";
+            ss << "Units recovered: " << std::to_string(comp->units_recovered) << "\t";
+            ss << "Units reinforced other bat: " << std::to_string(comp->units_reinforced_other_battalion) << "\t";
             ss << "Units: " << std::endl;
+            int iunit = 0;
             for (auto unit : comp->units){
-                ss << "Unit " << std::to_string(++iunit) << " ";
+                ss << "Unit " << std::to_string(++iunit) << "\t";
                 ss << "State: ";
                 switch (unit.state){
                     case Unit::healthy:
@@ -292,7 +301,7 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats){
                         ss << "dead ";
                         break;
                 }
-                ss << "Last injury: " << std::to_string(unit.time_of_last_injury) << " ";
+                ss << "Last injury: " << std::to_string(unit.time_of_last_injury) << "\t";
                 ss << "Medical procedures: " << std::to_string(unit.number_of_medical_procedures) << std::endl;
             }
         }
