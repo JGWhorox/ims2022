@@ -44,13 +44,13 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
     redArmy.armyID = 2;
 
     //config of national resources
-    blueArmy.ammo_supplies = 5000.0;
-    blueArmy.combat_supplies = 5000.0;
-    blueArmy.food_supplies = 10000.0;
+    blueArmy.ammo_supplies = 5000.0 * 4;
+    blueArmy.combat_supplies = 5000.0 * 4;
+    blueArmy.food_supplies = 10000.0 * 4;
 
-    redArmy.ammo_supplies = 5000.0;
-    redArmy.combat_supplies = 5000.0;
-    redArmy.food_supplies = 10000.0;
+    redArmy.ammo_supplies = 10000.0 * 4 ;
+    redArmy.combat_supplies = 10000.0 * 4;
+    redArmy.food_supplies = 20000.0 * 4;
 
     blueArmy.logistics_effectivity = 0.95;
     blueArmy.technology_level = 4.2;
@@ -62,13 +62,13 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
 
     //config of army sizes and
     //config initial position armies on the mapmake_pair(1,1)
-    blueArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,blueArmy.armyID,map_size_x/3,2)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
-    //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3,4));
-    //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,6));
-    //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,8));
+    //blueArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,blueArmy.armyID,map_size_x/3,2)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3,4));
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,6));
+    blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,8));
     
-    redArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,redArmy.armyID,map_size_x,2));
-    //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,4));
-    //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,6));
-    //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,8));
+    //redArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,redArmy.armyID,map_size_x,2));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,4));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,6));
+    redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,8));
 }

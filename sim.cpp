@@ -8,7 +8,6 @@
 #include "mapgenerator.h"
 
 int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
-    std::cout << "hue" << std::endl;
     //vkladanie na mapu
     for(auto &battalion : blueArmy.battalions){
         scenario.set_occupation(battalion.position, Cell::blue);
@@ -99,7 +98,6 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
 
             for (auto &comp : b->companies) comp->heal_units(hour);
 
-            std::cout << b->airdrop_timeout << std::endl;
             if (b->airdrop_timeout == 0){
                 if (b->check_supplies()){
                     if (b->armyID == blueArmy.armyID) b->call_airdrop(blueArmy, hour, b->position.first);
@@ -108,7 +106,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
             }
             else {
                 if (--b->airdrop_timeout == 0){
-                    std::cout << "here" << std::endl;
+                    b->check_supplies();
                     if (b->armyID == blueArmy.armyID) b->assign_airdrop(blueArmy);
                     if (b->armyID == redArmy.armyID) b->assign_airdrop(redArmy);
                 }

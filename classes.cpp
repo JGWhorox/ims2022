@@ -15,7 +15,7 @@ bool Unit::operator==(const Unit & u){
 Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID, int posx, int posy){
     Battalion b;
     for (int i = 0; i < Inf; i++){
-        Company* c =new Company(Inf_size,Inf_size*5,Inf_size*9,Inf_size/10);
+        Company* c =new Company(Inf_size,Inf_size*5,Inf_size*9,Inf_size/5);
         c->type = Company::infantry;
         b.companies.push_back(c);
     }
@@ -178,13 +178,13 @@ int Battalion::get_number_of_healthy_units(){
 
 bool Battalion::check_supplies(){
     bool needs_airdrop;
-    for (auto& comp : companies){
+    for (auto comp : companies){
         needs_airdrop = false;
         switch (comp->type){
             case Company::infantry:
                 if (comp->units.size() * 5 / 2 >= comp->ammo) needs_airdrop = true;
                 if (comp->units.size() * 9 / 2 >= comp->food) needs_airdrop = true;
-                if (comp->units.size() / 10 / 2 >= comp->supplies) needs_airdrop = true;
+                if (comp->units.size() / 4 / 2 >= comp->supplies) needs_airdrop = true;
                 break;
             case Company::combat_support:
                 if (comp->units.size() * 3 / 2 >= comp->ammo) needs_airdrop = true;
@@ -210,7 +210,7 @@ void Battalion::call_airdrop(Army army, int time, int distance){
 
 void Battalion::assign_airdrop(Army army){
     double coef = 1;
-    if (army.armyID == 2) coef = 1.5;
+    if (army.armyID == 2) coef = 5; // Longer travel time => more supplies in 1 run
     for (auto comp : companies){
         if (!comp->airdrop) continue;
 
@@ -220,8 +220,8 @@ void Battalion::assign_airdrop(Army army){
                 comp->ammo += comp->units.size() * 5 * army.logistics_effectivity * coef;
                 if (comp->units.size() * 9 / 2 >= comp->food)
                 comp->food += comp->units.size() * 9 * army.logistics_effectivity * coef;
-                if (comp->units.size() / 10 / 2 >= comp->supplies)
-                comp->supplies += comp->units.size() / 10 * army.logistics_effectivity * coef;
+                if (comp->units.size() / 4 / 2 >= comp->supplies)
+                comp->supplies += comp->units.size() / 4 * army.logistics_effectivity * coef;
                 break;
             case Company::combat_support:
                 if (comp->units.size() * 3 / 2 >= comp->ammo)

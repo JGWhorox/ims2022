@@ -27,7 +27,7 @@ int main(int argc, char** argv){
 
     configureScenario(blueArmy,redArmy,map);
 
-    int retval = executeSim(blueArmy, redArmy, map, 700/*720 is 1 month in hours*/);
+    int retval = executeSim(blueArmy, redArmy, map, 72/*720 is 1 month in hours*/);
     
     return 0;
 }
