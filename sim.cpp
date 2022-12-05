@@ -97,11 +97,30 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                 continue;
             }
 
+            for (auto &comp : b->companies) comp->heal_units(hour);
+
+            std::cout << b->airdrop_timeout << std::endl;
+            if (b->airdrop_timeout == 0){
+                if (b->check_supplies()){
+                    if (b->armyID == blueArmy.armyID) b->call_airdrop(blueArmy, hour, b->position.first);
+                    else if (b->armyID == redArmy.armyID) b->call_airdrop(redArmy, hour, scenario.max_x - b->position.first);
+                }
+            }
+            else {
+                if (--b->airdrop_timeout == 0){
+                    std::cout << "here" << std::endl;
+                    if (b->armyID == blueArmy.armyID) b->assign_airdrop(blueArmy);
+                    if (b->armyID == redArmy.armyID) b->assign_airdrop(redArmy);
+                }
+            }
 
             if(b->in_fight){
                 //engagement logic
                 if (b->armyID == redArmy.armyID){
-                    
+                    if (!b->attacking_logistics) {
+                        blueArmy.logistics_effectivity *= 0.9;
+                        b->attacking_logistics = true;
+                    }
                     //std::cout << "DEBUG: trying to write to blue bat from red_bat->enemy_bat" << std::endl;
                     b->enemy_Battalion->in_fight = true;
                     //std::cout << "DEBUG: write succesful? should be true: " << std::to_string(b->enemy_Battalion->in_fight) << std::endl;
@@ -206,7 +225,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     auto blue_cover = scenario.get_cell(b->enemy_Battalion->position).cover;
                     auto red_cover = scenario.get_cell(b->position).cover;
                     //calculate number of casualties or simply "DMG dealt" 
-                    blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.5-blue_cover);
+                    blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.75-blue_cover);
                     red_casualties = (double)blue_true_shots_fired*blue_DMGmodifier*(1.5-red_cover);
                     //std::cout << "DEBUG: updating battalions after each hour in conflict" << std::endl;
                     //updates battalions after each hour in conflict

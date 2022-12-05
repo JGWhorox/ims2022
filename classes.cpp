@@ -109,6 +109,7 @@ bool Battalion::update_battalion(double casualties, int munition_lost, int suppl
         //std::cout << "ammo af: " << c->ammo << std::endl;
         
         //std::cout << "supplies b4: " << c->supplies<< std::endl;;
+        if (c->type != Company::tank)
         c->supplies -= supplies_lost*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
         //std::cout << "supplies af: " << c->supplies << std::endl;
 
@@ -175,6 +176,72 @@ int Battalion::get_number_of_healthy_units(){
 }
 //debug
 
+bool Battalion::check_supplies(){
+    bool needs_airdrop;
+    for (auto& comp : companies){
+        needs_airdrop = false;
+        switch (comp->type){
+            case Company::infantry:
+                if (comp->units.size() * 5 / 2 >= comp->ammo) needs_airdrop = true;
+                if (comp->units.size() * 9 / 2 >= comp->food) needs_airdrop = true;
+                if (comp->units.size() / 10 / 2 >= comp->supplies) needs_airdrop = true;
+                break;
+            case Company::combat_support:
+                if (comp->units.size() * 3 / 2 >= comp->ammo) needs_airdrop = true;
+                if (comp->units.size() * 9 / 2 >= comp->food) needs_airdrop = true;
+                if (comp->units.size() / 2 >= comp->supplies) needs_airdrop = true;
+                break;
+            case Company::tank:
+                if (comp->units.size() * 5 / 2 >= comp->ammo) needs_airdrop = true;
+                if (comp->units.size() * 36 / 2 >= comp->food) needs_airdrop = true;
+                break;
+        }
+        if (needs_airdrop) {
+            comp->airdrop = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+void Battalion::call_airdrop(Army army, int time, int distance){
+    airdrop_timeout = Normal(distance*2.25, 1) * army.logistics_effectivity / 2;
+}
+
+void Battalion::assign_airdrop(Army army){
+    double coef = 1;
+    if (army.armyID == 2) coef = 1.5;
+    for (auto comp : companies){
+        if (!comp->airdrop) continue;
+
+        switch (comp->type){
+            case Company::infantry:
+                if (comp->units.size() * 5 / 2 >= comp->ammo)
+                comp->ammo += comp->units.size() * 5 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 9 / 2 >= comp->food)
+                comp->food += comp->units.size() * 9 * army.logistics_effectivity * coef;
+                if (comp->units.size() / 10 / 2 >= comp->supplies)
+                comp->supplies += comp->units.size() / 10 * army.logistics_effectivity * coef;
+                break;
+            case Company::combat_support:
+                if (comp->units.size() * 3 / 2 >= comp->ammo)
+                comp->ammo += comp->units.size() * 3 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 9 / 2 >= comp->food)
+                comp->food += comp->units.size() * 9 * army.logistics_effectivity * coef;
+                if (comp->units.size() / 2 >= comp->supplies)
+                comp->supplies += comp->units.size() * army.logistics_effectivity * coef;
+                break;
+            case Company::tank:
+                if (comp->units.size() * 5 / 2 >= comp->ammo)
+                comp->ammo += comp->units.size() * 5 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 36 / 2 >= comp->food)
+                comp->food += comp->units.size() * 36 * army.logistics_effectivity * coef;
+                break;
+        }
+        comp->airdrop = false;
+    }
+}
+
 void Company::remove_dead_units(){
     for (auto u = units.begin(); u != units.end() ; ){
         if (u->dead == Unit::dead){
@@ -229,13 +296,17 @@ Company::Company(int u, int a, int f, int s){
     supplies = s;
 }
 
-void Company::heal_units(std::list<Unit> units){
-    if (!supplies) return;
+void Company::heal_units(int time){
+    if (supplies <= 0) return;
     
     for (auto &u : units){
         if (u.state == Unit::wounded){
-            // TODO add randomness here
-            u.state = Unit::healthy;
+            if (time - u.time_of_last_injury < 24) continue;
+            auto x = Random();
+            if (x <= (0,1 * ++u.number_of_medical_procedures)) {
+                units_recovered++;
+                u.state = Unit::healthy;
+            } else u.time_of_last_injury = time;
             supplies--;
         }
     }
@@ -257,7 +328,7 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats, bool show_ba
     int ibat = 0;
     ss << "########## ARMY ID:" << std::to_string(armyID) << " ##########" << std::endl;
     ss << "######### hurr hour:" << std::to_string(hour) << " #########" << std::endl;
-    if (show_army_stats){
+    if (true){
         ss << "Army stats:" << std::endl;
         ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << "\t";
         ss << "Professionalism: " << std::to_string(professionalism) << "\t";

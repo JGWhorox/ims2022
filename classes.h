@@ -32,6 +32,7 @@ class Company {
     int units_wounded = 0;
     int units_recovered = 0;
     int units_reinforced_other_battalion = 0;
+    bool airdrop = false;
 
     Company(int units, int ammo, int food, int supplies);
     
@@ -41,7 +42,7 @@ class Company {
     int ret_current_healthy_size();
     Unit* ret_healthy_unit();
     
-    void heal_units(std::list<Unit>);
+    void heal_units(int time);
 };
 
 class Battalion {
@@ -49,7 +50,6 @@ class Battalion {
   std::list<Company*> companies; 
   std::pair<int, int> position;
   bool in_fight = false;
-  //bool preparing_for_attack = false;
   double moving = 0.0;
   bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 
@@ -58,6 +58,8 @@ class Battalion {
   int backup_timeout = 0;
   Battalion* enemy_Battalion;
   int attack_power;
+  bool attacking_logistics = false;
+  int airdrop_timeout = 0;
   
   
   bool addCompany(Company &com);
@@ -66,6 +68,9 @@ class Battalion {
   void call_backup(Army &army);
   bool update_battalion(double casualties, int munition_lost, int supplies_lost, double modifier, int hour);
   void assign_backup(Battalion backup_bat);
+  bool check_supplies();
+  void call_airdrop(Army army, int time, int distance);
+  void assign_airdrop(Army army);
   
   int countHistoricalDead();
   int get_number_of_companies();
