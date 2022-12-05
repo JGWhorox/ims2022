@@ -68,9 +68,11 @@ class Battalion {
   void call_backup(Army &army);
   bool update_battalion(double casualties, int munition_lost, int supplies_lost, double modifier, int hour);
   void assign_backup(Battalion backup_bat);
-  bool check_supplies();
+  void check_supplies();
   void call_airdrop(Army army, int time, int distance);
   void assign_airdrop(Army army);
+  int get_all_ammo();
+  double get_ammo_saturation();
   
   int countHistoricalDead();
   int get_number_of_companies();

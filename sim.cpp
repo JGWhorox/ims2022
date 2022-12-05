@@ -32,7 +32,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
         }
         //calculate attack power in the beginning of the turn
         for(auto b : battalions_vector){
-            b->attack_power = b->get_base_attack_power();
+            b->attack_power = b->get_base_attack_power() * b->get_ammo_saturation();
             //red army calculation
             if (b->armyID == redArmy.armyID){
                 b->attack_power *= redArmy.technology_level*redArmy.professionalism;
@@ -98,15 +98,13 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
 
             for (auto &comp : b->companies) comp->heal_units(hour);
 
+            b->check_supplies();
             if (b->airdrop_timeout == 0){
-                if (b->check_supplies()){
-                    if (b->armyID == blueArmy.armyID) b->call_airdrop(blueArmy, hour, b->position.first);
-                    else if (b->armyID == redArmy.armyID) b->call_airdrop(redArmy, hour, scenario.max_x - b->position.first);
-                }
+                if (b->armyID == blueArmy.armyID) b->call_airdrop(blueArmy, hour, b->position.first);
+                else if (b->armyID == redArmy.armyID) b->call_airdrop(redArmy, hour, scenario.max_x - b->position.first);
             }
             else {
                 if (--b->airdrop_timeout == 0){
-                    b->check_supplies();
                     if (b->armyID == blueArmy.armyID) b->assign_airdrop(blueArmy);
                     if (b->armyID == redArmy.armyID) b->assign_airdrop(redArmy);
                 }
