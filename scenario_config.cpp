@@ -57,17 +57,17 @@ void configureScenario(Army &blueArmy,Army &redArmy, MyMap &map){
     blueArmy.professionalism = 0.95;
 
     redArmy.logistics_effectivity = 0.80;
-    redArmy.technology_level = 4.2;
-    redArmy.professionalism = 0.95;
+    redArmy.technology_level = 3.8;
+    redArmy.professionalism = 0.1;
 
     //config of army sizes and
     //config initial position armies on the mapmake_pair(1,1)
-    blueArmy.battalions.push_back(generate_battalion(1,10,1,5,1,1,blueArmy.armyID,map_size_x/3,2)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
+    blueArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,blueArmy.armyID,map_size_x/3,2)); //600 Infantry + 50 Combat Support units + 10 Tanks with crew
     //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3,4));
     //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,6));
     //blueArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,blueArmy.armyID,map_size_x/3+1,8));
     
-    redArmy.battalions.push_back(generate_battalion(1,10,1,5,1,1,redArmy.armyID,map_size_x,2));
+    redArmy.battalions.push_back(generate_battalion(1,100,1,50,1,10,redArmy.armyID,map_size_x,2));
     //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,4));
     //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,6));
     //redArmy.battalions.push_back(generate_battalion(5,130,1,50,0,0,redArmy.armyID,map_size_x,8));

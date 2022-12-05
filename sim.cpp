@@ -18,9 +18,10 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
     }
 
     for (int hour=0; hour <= timeframe; hour++){
+        std::cout << "HOUR: " << hour << std::endl;
         
-        blueArmy.report_stats(hour,true,false);
-        redArmy.report_stats(hour,true,false);
+        blueArmy.report_stats(hour,true,false,true,false);
+        redArmy.report_stats(hour,true,false,true,false);
 
         //get all battalions into 1 poitner list so I can randomize their engagements
         std::vector<Battalion*> battalions_vector; 
@@ -99,10 +100,11 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
 
             if(b->in_fight){
                 //engagement logic
-                if (b->armyID = redArmy.armyID){
+                if (b->armyID == redArmy.armyID){
                     
+                    //std::cout << "DEBUG: trying to write to blue bat from red_bat->enemy_bat" << std::endl;
                     b->enemy_Battalion->in_fight = true;
-                    
+                    //std::cout << "DEBUG: write succesful? should be true: " << std::to_string(b->enemy_Battalion->in_fight) << std::endl;
                     //##### config section #####
                     double crit_f = 0.005;
                     double miss = 0.03;
@@ -154,7 +156,11 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     //calculates the chance of each soldier in battallion firing upon enemy in 1 hour + is able to simulate randomness like shooting and missing or 
                     //f*ckups like jamming of the gun or anything that could be represented by loss of a combat supply (dmged tank/other weapons, missfire, etc)
                     //values configurable in config section above
+                    //std::cout << b->enemy_Battalion->get_number_of_healthy_units() << std::endl;
+                    //std::cout << "DEBUG: calculating BLUE ARMY stats on batlefield" << std::endl;
+                    
                     for (int i = 0; i < b->enemy_Battalion->get_number_of_healthy_units(); i++){                   
+                        //std::cout << "DEBUG: get number of healthy units: " << b->enemy_Battalion->get_number_of_healthy_units() << std::endl;
                         auto x = Random()/**b->enemy_Battalion->Professionalism*/;
                         
                         if (x < crit_f){ //critical failure - failed to hit, lost 1 munition and 1 supply to repair equipment
@@ -172,7 +178,9 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                             blue_true_shots_fired += 1;
                         }
                     }
-                    for (int i = 0; i < b->get_number_of_healthy_units(); i++){                   
+                    //std::cout << "DEBUG: calculations done for BLUE ARMY - munition lost: " << blue_munitions_lost << " supplies lost: " << blue_supplies_lost << std::endl;
+                    //std::cout << "DEBUG: calculating RED ARMY stats on batlefield" << std::endl;
+                    for (int i = 0; i < b->get_number_of_healthy_units(); i++){    
                         auto x = Random()/**b->enemy_Battalion->Professionalism*/;
                         if (x < 0.02){ //critical failure - failed to hit, lost 1 munition and 1 supply to repair equipment
                             red_munitions_lost += 1;
@@ -189,9 +197,10 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                             red_true_shots_fired += 1;
                         }
                     }
+                    //std::cout << "DEBUG: calculations done for RED ARMY - munition lost: " << red_munitions_lost << " supplies lost :" << red_supplies_lost << std::endl;
                     
-                    double blue_casualties = 0;
-                    double red_casualties = 0;
+                    double blue_casualties = 0.0;
+                    double red_casualties = 0.0;
 
                     //get the average cover of each battalion
                     auto blue_cover = scenario.get_cell(b->enemy_Battalion->position).cover;
@@ -199,13 +208,20 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     //calculate number of casualties or simply "DMG dealt" 
                     blue_casualties = (double)red_true_shots_fired*red_DMGmodifier*(1.5-blue_cover);
                     red_casualties = (double)blue_true_shots_fired*blue_DMGmodifier*(1.5-red_cover);
-
+                    //std::cout << "DEBUG: updating battalions after each hour in conflict" << std::endl;
                     //updates battalions after each hour in conflict
+                    /*for (auto u : b->enemy_Battalion->companies){
+                        std::cout << "blue bat company ammo: " << u->ammo << std::endl;
+                    }*/
                     if (!b->enemy_Battalion->update_battalion(blue_casualties,blue_munitions_lost,blue_supplies_lost,blue_survival_modifier,hour)){
                         //blue battalion doesnt have healthy units
                         b->enemy_Battalion->in_fight = false;
                         b->in_fight = false;
                     }
+                    
+                    /*for (auto u : b->enemy_Battalion->companies){
+                        std::cout << "blue bat company updated ammo: " << u->ammo << std::endl;
+                    }*/
                         
                     if (!b->update_battalion(red_casualties,red_munitions_lost,red_supplies_lost,red_survival_modifier,hour)){
                         //red battalion doesnt have healthy units
@@ -213,6 +229,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                         b->in_fight = false;
                         b->position = std::make_pair(scenario.max_x,b->position.second);
                     }
+                    //std::cout << "DEBUG: END of if in fight" << std::endl;
                         
 
                 }
@@ -244,12 +261,12 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                             Cell &current_cell = scenario.get_cell(std::make_pair(posx-1, posy+i));
 
                             if (current_cell.occupation == Cell::red) continue;
-                            //if modry =utok
+                            //if modry =utok ATTACK
                             if (current_cell.occupation == Cell::blue) {
                                 b->enemy_Battalion = blueArmy.ret_battalion_on_position(std::make_pair(current_cell.posx,current_cell.posy));
                                 b->in_fight = true;
-                                    
-                            } //TODO attack enemy
+                                break;      
+                            } 
                             std::cout << current_cell.posx << "<-x cell y->" << current_cell.posy<< std::endl;
                             if (current_cell.cover < lowest_cover) {
                                 lowest_cover = current_cell.cover;
@@ -260,6 +277,10 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                                 highest_cover = current_cell.cover;
                                 highest_cover_pos = std::make_pair(posx-1, posy+i);
                             }
+                        }
+                        if (b->in_fight == true){
+                            //std::cout << "battalion in battle LEAVING the second if branch" << std::endl;
+                            continue;
                         }
                         std::cout << "highest cover: " << std::to_string(highest_cover) << "position x: " << std::to_string(highest_cover_pos.first) << " y: " << std::to_string(highest_cover_pos.second) << std::endl;
                         std::cout << " lowest cover: " << std::to_string(lowest_cover)<< "position x: " << std::to_string(lowest_cover_pos.first) << " y: " << std::to_string(lowest_cover_pos.second) << std::endl;
@@ -293,6 +314,7 @@ int executeSim(Army &blueArmy, Army &redArmy, MyMap scenario, int timeframe){
                     }
                 }
             }
+            //std::cout << "DEBUG: END of one while loop" << std::endl;
         }   
     }
     return 0;

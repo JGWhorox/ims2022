@@ -88,7 +88,7 @@ class Army {
     //int antitank_supplies;
     int armyID;
 
-    void report_stats(int hour, bool debug, bool show_army_stats);
+    void report_stats(int hour, bool debug, bool show_army_stats, bool show_battalion_stats, bool show_units);
     Battalion* ret_battalion_on_position(std::pair<int,int> position);
 
 };

@@ -96,14 +96,24 @@ bool Battalion::update_battalion(double casualties, int munition_lost, int suppl
     //int number_of_companies = battalion.get_number_of_companies();
     
     //std::vector<Company*> companies_vector;
-
-    for (auto c : this->companies){
+    //std::cout << "updating battalion" << std::endl;
+    for (auto &c : companies){
         //companies_vector.push_back(&c);
-        c->DMG_taken += casualties/(double)c->ret_current_healthy_size();
-        c->ammo -= munition_lost/(double)c->ret_current_healthy_size();
-        c->supplies -= supplies_lost/(double)c->ret_current_healthy_size();
+        //std::cout << "### updating supplies" << std::endl;
+        //std::cout << "dmg taken b4: " << c->DMG_taken<< std::endl;;
+        c->DMG_taken += casualties*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
+        //std::cout << "dmg taken af: " << c->DMG_taken << std:: endl;
+        
+        //std::cout << "ammo b4: " << c->ammo<< std::endl;;
+        c->ammo -= munition_lost*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
+        //std::cout << "ammo af: " << c->ammo << std::endl;
+        
+        //std::cout << "supplies b4: " << c->supplies<< std::endl;;
+        c->supplies -= supplies_lost*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
+        //std::cout << "supplies af: " << c->supplies << std::endl;
 
         while (c->DMG_taken >= 1.0){
+            //std::cout << "DEBUG: dealing damage" << std::endl;
             auto x = Random();
             auto u = c->ret_healthy_unit();
 
@@ -112,17 +122,18 @@ bool Battalion::update_battalion(double casualties, int munition_lost, int suppl
             }
 
             if (x < 0.18*survival_modifier){
-                u->state == Unit::dead;
+                u->state = Unit::dead;
                 c->units_died++;
             }
             else{
-                u->state == Unit::wounded;
+                u->state = Unit::wounded;
                 u->time_of_last_injury = hour;
                 c->units_wounded++;
             }
             c->DMG_taken -= 1.0;
         }
     }
+    //std::cout << "DEBUG: updated battalion" << std::endl;
     return true;
     
 }
@@ -139,7 +150,7 @@ int Battalion::get_number_of_companies(){
 }
 
 int Battalion::get_base_attack_power(){
-    int retval;
+    int retval = 0;
     for (auto c : companies ){
         if (c->type == Company::tank){
             retval += c->units.size()*250;
@@ -153,10 +164,13 @@ int Battalion::get_base_attack_power(){
 }
 
 int Battalion::get_number_of_healthy_units(){
-    int retval;
-    for (auto c : companies ){
-            retval += c->units.size();
+    int retval = 0;
+    //std::cout << "DEBUG: loading battalion companies"<< std::endl;
+    for (auto &c : companies ){
+        //std::cout << "DEBUG: loading battalion units " << std::endl;
+        retval += c->ret_current_healthy_size();       
     }
+    //std::cout << "returning retval: " << retval << std::endl;
     return retval;
 }
 //debug
@@ -185,10 +199,12 @@ Unit* Company::ret_healthy_unit(){
 
 int Company::ret_current_healthy_size(){
     int retval = 0;
+    //std::cout << "DEBUG trying to return number of heatlhy units in company" << std::endl;
     for (auto &u : units) {
         if (u.state == Unit::healthy)
             retval++; 
     }
+    //std::cout << "DEBUG returning number of heatlhy units in company" << std::endl;
     return retval;
 }
 
@@ -234,7 +250,7 @@ Battalion* Army::ret_battalion_on_position(std::pair<int,int>position){
     return nullptr;
 }
 
-void Army::report_stats(int hour, bool debug, bool show_army_stats){
+void Army::report_stats(int hour, bool debug, bool show_army_stats, bool show_batalion_stats, bool show_units){
     if (!(hour % 24 || hour % 168 || hour % 720 || debug)) return;
     //else print data, if debug flag is set it prints the data every hour
     std::stringstream ss;
@@ -287,7 +303,8 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats){
             ss << "Units reinforced other bat: " << std::to_string(comp->units_reinforced_other_battalion) << "\t";
             ss << "Units: " << std::endl;
             int iunit = 0;
-            for (auto unit : comp->units){
+            if (show_units){
+                for (auto unit : comp->units){
                 ss << "Unit " << std::to_string(++iunit) << "\t";
                 ss << "State: ";
                 switch (unit.state){
@@ -303,6 +320,7 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats){
                 }
                 ss << "Last injury: " << std::to_string(unit.time_of_last_injury) << "\t";
                 ss << "Medical procedures: " << std::to_string(unit.number_of_medical_procedures) << std::endl;
+            }
             }
         }
     }
