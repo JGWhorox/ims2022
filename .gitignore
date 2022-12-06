@@ -1,4 +1,6 @@
 .vscode/settings.json
 genevachecklist
-test.txt
+*.txt
+*.csv
+*.zip
 ./simlib/

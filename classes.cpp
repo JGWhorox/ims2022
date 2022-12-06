@@ -5,29 +5,22 @@
 #include <simlib.h>
 #include "classes.h"
 
-/*
-use this if you want ot use remove lul
-bool Unit::operator==(const Unit & u){
-    return this->state == u.state;
-}*/
-
-
 Battalion generate_battalion(int Inf, int Inf_size, int Cs,int Cs_size, int T, int T_size, int armyID, int posx, int posy){
     Battalion b;
     for (int i = 0; i < Inf; i++){
-        Company* c =new Company(Inf_size,Inf_size*2,Inf_size*9,Inf_size/5);
+        Company* c =new Company(Inf_size,Inf_size*2,Inf_size*3,Inf_size/5);
         c->type = Company::infantry;
         b.companies.push_back(c);
     }
 
     for (int i = 0; i < Cs; i++){
-        Company* c = new Company(Cs_size,Cs_size*3,Cs_size*9,Cs_size);
+        Company* c = new Company(Cs_size,Cs_size*3,Cs_size*3,Cs_size);
         c->type = Company::combat_support;
         b.companies.push_back(c);
     }
 
     for (int i = 0; i < T; i++){
-        Company* c = new Company(T_size,T_size*5,T_size*36,0);
+        Company* c = new Company(T_size,T_size*5,T_size*10,0);
         c->type = Company::tank;
         b.companies.push_back(c);
     }
@@ -93,28 +86,20 @@ void Battalion::call_backup(Army &army){
 }
 
 bool Battalion::update_battalion(double casualties, int munition_lost, int supplies_lost, double survival_modifier, int hour){
-    //int number_of_companies = battalion.get_number_of_companies();
-    
-    //std::vector<Company*> companies_vector;
-    //std::cout << "updating battalion" << std::endl;
+
     for (auto &c : companies){
-        //companies_vector.push_back(&c);
-        //std::cout << "### updating supplies" << std::endl;
-        //std::cout << "dmg taken b4: " << c->DMG_taken<< std::endl;;
+
+
         c->DMG_taken += casualties*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
-        //std::cout << "dmg taken af: " << c->DMG_taken << std:: endl;
-        
-        //std::cout << "ammo b4: " << c->ammo<< std::endl;;
+
         c->ammo -= munition_lost*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
-        //std::cout << "ammo af: " << c->ammo << std::endl;
-        
-        //std::cout << "supplies b4: " << c->supplies<< std::endl;;
+ 
         if (c->type != Company::tank)
         c->supplies -= supplies_lost*((double)c->ret_current_healthy_size()/this->get_number_of_healthy_units());
-        //std::cout << "supplies af: " << c->supplies << std::endl;
+
 
         while (c->DMG_taken >= 1.0){
-            //std::cout << "DEBUG: dealing damage" << std::endl;
+
             auto x = Random();
             auto u = c->ret_healthy_unit();
 
@@ -134,7 +119,7 @@ bool Battalion::update_battalion(double casualties, int munition_lost, int suppl
             c->DMG_taken -= 1.0;
         }
     }
-    //std::cout << "DEBUG: updated battalion" << std::endl;
+
     return true;
     
 }
@@ -166,15 +151,15 @@ int Battalion::get_base_attack_power(){
 
 int Battalion::get_number_of_healthy_units(){
     int retval = 0;
-    //std::cout << "DEBUG: loading battalion companies"<< std::endl;
+
     for (auto &c : companies ){
-        //std::cout << "DEBUG: loading battalion units " << std::endl;
+
         retval += c->ret_current_healthy_size();       
     }
-    //std::cout << "returning retval: " << retval << std::endl;
+
     return retval;
 }
-//debug
+
 
 void Battalion::check_supplies(){
     bool needs_airdrop;
@@ -183,17 +168,17 @@ void Battalion::check_supplies(){
         switch (comp->type){
             case Company::infantry:
                 if (comp->units.size() * 2 / 2 >= comp->ammo) needs_airdrop = true;
-                if (comp->units.size() * 9 / 2 >= comp->food) needs_airdrop = true;
+                if (comp->units.size() * 3 / 2 >= comp->food) needs_airdrop = true;
                 if (comp->units.size() / 5 / 2 >= comp->supplies) needs_airdrop = true;
                 break;
             case Company::combat_support:
                 if (comp->units.size() * 3 / 2 >= comp->ammo) needs_airdrop = true;
-                if (comp->units.size() * 9 / 2 >= comp->food) needs_airdrop = true;
+                if (comp->units.size() * 3 / 2 >= comp->food) needs_airdrop = true;
                 if (comp->units.size() / 2 >= comp->supplies) needs_airdrop = true;
                 break;
             case Company::tank:
                 if (comp->units.size() * 5 / 2 >= comp->ammo) needs_airdrop = true;
-                if (comp->units.size() * 36 / 2 >= comp->food) needs_airdrop = true;
+                if (comp->units.size() * 10 / 2 >= comp->food) needs_airdrop = true;
                 break;
         }
         if (needs_airdrop) {
@@ -216,24 +201,24 @@ void Battalion::assign_airdrop(Army army){
             case Company::infantry:
                 if (comp->units.size() * 2 / 2 >= comp->ammo)
                 comp->ammo += comp->units.size() * 2 * army.logistics_effectivity * coef;
-                if (comp->units.size() * 9 / 2 >= comp->food)
-                comp->food += comp->units.size() * 9 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 3 / 2 >= comp->food)
+                comp->food += comp->units.size()  * 3 * army.logistics_effectivity * coef;
                 if (comp->units.size() / 5 / 2 >= comp->supplies)
                 comp->supplies += comp->units.size() / 5 * army.logistics_effectivity * coef;
                 break;
             case Company::combat_support:
                 if (comp->units.size() * 3 / 2 >= comp->ammo)
                 comp->ammo += comp->units.size() * 3 * army.logistics_effectivity * coef;
-                if (comp->units.size() * 9 / 2 >= comp->food)
-                comp->food += comp->units.size() * 9 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 3 / 2 >= comp->food)
+                comp->food += comp->units.size() * 3 * army.logistics_effectivity * coef;
                 if (comp->units.size() / 2 >= comp->supplies)
                 comp->supplies += comp->units.size() * army.logistics_effectivity * coef;
                 break;
             case Company::tank:
                 if (comp->units.size() * 5 / 2 >= comp->ammo)
                 comp->ammo += comp->units.size() * 5 * army.logistics_effectivity * coef;
-                if (comp->units.size() * 36 / 2 >= comp->food)
-                comp->food += comp->units.size() * 36 * army.logistics_effectivity * coef;
+                if (comp->units.size() * 10 / 2 >= comp->food)
+                comp->food += comp->units.size() * 10 * army.logistics_effectivity * coef;
                 break;
         }
         comp->airdrop = false;
@@ -253,6 +238,30 @@ double Battalion::get_ammo_saturation(){
         return (double)get_all_ammo() / (double)get_number_of_healthy_units();
     }
     return 1;
+}
+
+int Battalion::get_all_dead_units(){
+    int res = 0;
+    for (auto comp : companies){
+        res += comp->units_died;
+    }
+    return res;
+}
+
+int Battalion::get_all_wounded_units(){
+    int res = 0;
+    for (auto comp : companies){
+        res += comp->units_wounded;
+    }
+    return res;
+}
+
+int Battalion::get_all_recovered_units(){
+    int res = 0;
+    for (auto comp : companies){
+        res += comp->units_recovered;
+    }
+    return res;
 }
 
 void Company::remove_dead_units(){
@@ -279,12 +288,11 @@ Unit* Company::ret_healthy_unit(){
 
 int Company::ret_current_healthy_size(){
     int retval = 0;
-    //std::cout << "DEBUG trying to return number of heatlhy units in company" << std::endl;
+
     for (auto &u : units) {
         if (u.state == Unit::healthy)
             retval++; 
     }
-    //std::cout << "DEBUG returning number of heatlhy units in company" << std::endl;
     return retval;
 }
 
@@ -346,9 +354,6 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats, bool show_ba
         ss << "Logistics effectivity: " << std::to_string(logistics_effectivity) << "\t";
         ss << "Professionalism: " << std::to_string(professionalism) << "\t";
         ss << "Technology level: "  << std::to_string(technology_level) << "\t";
-        ss << "Anni supplies: " << std::to_string(ammo_supplies) << "\t";
-        ss << "Food supplies: " << std::to_string(food_supplies) << "\t";
-        ss << "Combat supplies: "<< std::to_string(combat_supplies) << "\t";
         ss << "Battalion stats:" << std::endl;
     }
     for (auto bat: battalions){
@@ -410,3 +415,4 @@ void Army::report_stats(int hour, bool debug, bool show_army_stats, bool show_ba
     }
     std::cout << ss.str() << std::endl;
 }
+

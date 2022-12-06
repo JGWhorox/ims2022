@@ -12,7 +12,6 @@ class Unit {
     State state; // state of the unit
     int time_of_last_injury = 0;
     int number_of_medical_procedures = 0;
-    //bool operator==(const Unit& a);
     
 };
 
@@ -51,7 +50,6 @@ class Battalion {
   std::pair<int, int> position;
   bool in_fight = false;
   double moving = 0.0;
-  bool fortifying_or_recon = false; //possible delete
   int action_cooldown_counter = 0; 
   int armyID;
   bool is_backup = false;
@@ -78,6 +76,9 @@ class Battalion {
   int get_number_of_companies();
   int get_base_attack_power();
   int get_number_of_healthy_units();
+  int get_all_dead_units();
+  int get_all_wounded_units();
+  int get_all_recovered_units();
 
 };
 
@@ -89,10 +90,6 @@ class Army {
     double professionalism; // 0 - 1
     double technology_level; // 1 - 4.99 - 1 = first muskets, 2 = napoleonic wars, 3 = WW2, 4 = around 90's - 00's
 
-    double ammo_supplies;
-    double food_supplies;
-    double combat_supplies;
-    //int antitank_supplies;
     int armyID;
 
     void report_stats(int hour, bool debug, bool show_army_stats, bool show_battalion_stats, bool show_units);
